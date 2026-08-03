@@ -1,0 +1,14 @@
+module processing_element (
+    // Inputs
+        input logic unsigned [7:0] pixel,   // input unsigned data pixel [0-255]
+        input logic signed   [7:0] coeff,   // kernel signed coefficient [-128-127]
+        input logic                valid_in,// flags that input pixel is valid
+    // Outputs
+        output logic signed [15:0] product, // product signed output
+        output logic               valid_out// flags that product is valid iff valid_in asserted
+);
+    logic signed [8:0] pixel_ext;
+    assign pixel_ext = {1'b0, pixel};
+    assign product = pixel_ext * coeff;
+    assign valid_out = valid_in;
+endmodule
