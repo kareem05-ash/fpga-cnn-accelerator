@@ -12,7 +12,6 @@ module sw_addr_manager #(
         output logic [$clog2(N)-1 : 0]              stored_rows,
         output logic [$clog2(N)-1 : 0]              active_row,
         output logic [$clog2(N)-1 : 0]              oldest_row,
-        output logic [$clog2(N)-1 : 0]              newest_row,
         output logic [$clog2(N * IMG_WIDTH)-1 : 0]  wr_addr
 
 );
@@ -25,7 +24,6 @@ module sw_addr_manager #(
             col_idx     <= '0;
             stored_rows <= '0;
             oldest_row  <= '0;
-            newest_row  <= N-2;
             active_row  <= N-1;
         end else if (pixel_valid) begin
             if (col_idx == IMG_WIDTH - 1) begin
@@ -34,7 +32,6 @@ module sw_addr_manager #(
                     stored_rows <= stored_rows + 1;
                 end else if (stored_rows == N - 1) begin
                     active_row  <= oldest_row;
-                    newest_row  <= active_row;
                     oldest_row  <= (oldest_row == N-1)? '0 : oldest_row + 1;
                 end
             end else begin
