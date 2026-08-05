@@ -4,16 +4,16 @@ module input_if(
 		output  logic [7:0] pixel_out,
 		output  logic pixel_out_valid);
 		
-	always@(posedge clk, negedge rst) begin 
+	always@(posedge clk, negedge rst) begin    // LOW ASYNCHRONOUS RST 
 		if(!rst) begin 
 			pixel_out<=0;
 			pixel_out_valid<=0;
 		end
-		else if (processing_en & pixel_valid) begin 
+		else if (processing_en & pixel_valid) begin   // PASS PIXEL & SEND VALID SIGNAL 
 			pixel_out<= pixel_in;
 			pixel_out_valid<= 1;
 		end
-		else begin 
+		else begin                         
 			pixel_out<=0;
 			pixel_out_valid<=0;
 		end
