@@ -1,7 +1,5 @@
 package accelerator_pkg;
-    typedef enum logic [2:0] { 
-        IMG_WIDTH,
-        IMG_HEIGHT,
+    typedef enum logic [1:0] {
         SHIFT_AMT,
         RELU_EN,
         ROUND_EN
