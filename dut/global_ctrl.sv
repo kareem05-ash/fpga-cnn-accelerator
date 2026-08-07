@@ -13,7 +13,7 @@ module global_ctrl(
 	state_t cu_state, nx_state;
 					
 	always_ff@(posedge clk) begin   // REGISTER CU_STATE 
-		if(!rst) cu_state<=IDLE;
+		if(!rst_n) cu_state<=IDLE;
 		else cu_state<=nx_state;
 	end
 	
