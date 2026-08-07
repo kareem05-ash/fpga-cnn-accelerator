@@ -1,18 +1,23 @@
 import accelerator_pkg::*;
 
 module global_ctrl(
-	input wire logic clk, rst, start, output_done,
-	output logic  busy, done, processing_en
+	input wire logic clk, 
+	input wire logic rst_n, 
+	input wire logic start, 
+	input wire logic output_done,
+	output logic  busy, 
+	output logic done,
+	output logic processing_en
 	);
 	
 	state_t cu_state, nx_state;
 					
-	always@(posedge clk, negedge rst) begin   // REGISTER CU_STATE 
+	always_ff@(posedge clk) begin   // REGISTER CU_STATE 
 		if(!rst) cu_state<=IDLE;
 		else cu_state<=nx_state;
 	end
 	
-	always@(*) begin 
+	always_comb begin 
 		processing_en=0;        // DEFAULT VALUES  
 		done=0;
 		busy=0;
