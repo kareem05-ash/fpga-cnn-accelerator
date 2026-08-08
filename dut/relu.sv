@@ -1,6 +1,8 @@
 module relu #(
     // Parameters
-        parameter ACC_W = 24                                // accumulator output width
+        parameter int N,
+        parameter int PROD_W,
+        parameter ACC_W = PROD_W + $clog2(N)                              // accumulator output width
 ) (
     // Inputs
         input  logic signed [ACC_W-1 : 0]   conv_result,    // convolution result from the accumulator
