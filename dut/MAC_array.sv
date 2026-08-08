@@ -17,20 +17,27 @@ module MAC_array #(
 );
 
  logic valid_out [0:N-1];
- logic signed [15:0] product [N-1:0];
+ logic signed [PROD_W-1:0] product [N-1:0];
 
  logic [$clog2(N)-1:0] row_sel;   
 
  logic [7:0] window_row [N];           //MUX_SEL_WINDOW_ROW
  logic signed [7:0] kernel_row [N];    //MUX_SEL_KERNEL_ROW
 
- logic signed [16+$clog2(N)-1:0] partial_sum_comb;
+ logic signed [PROD_W+$clog2(N)-1:0] partial_sum_comb;
  
 
  generate                                  // N PROCESSING ELEMENT INSTANTIATION
   for (genvar r = 0; r < N; r++) begin
-	 processing_element U0 (.valid_in(window_valid), .pixel(window_row[r]), .coeff(kernel_row[r]), 
-		.valid_out(valid_out[r]), .product(product[r]));
+	 processing_element #(
+				.PROD_W(PROD_W)
+				) U0 (
+				.valid_in(window_valid), 
+			        .pixel(window_row[r]), 
+				.coeff(kernel_row[r]), 
+				.valid_out(valid_out[r]), 
+	  		        .product(product[r])
+			         );
   end
  endgenerate 
 
