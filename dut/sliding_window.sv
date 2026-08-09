@@ -1,7 +1,7 @@
 module sliding_window #(
     // Parameters
-        parameter   int N = 3,
-        parameter   int IMG_WIDTH
+        parameter   int unsigned N = 3,
+        parameter   int unsigned IMG_WIDTH
 )(
     // Inputs
         input  logic        clk,            // global active-high clk
@@ -40,7 +40,7 @@ module sliding_window #(
     sw_addr_manager #(
         .N        (N /* default 3 */),
         .IMG_WIDTH(IMG_WIDTH /* default 32 */)
-     ) u_addr_manager (
+    ) u_addr_manager (
         .clk        (clk),
         .rst_n      (rst_n),
         .pixel_valid(pixel_valid),
@@ -54,7 +54,7 @@ module sliding_window #(
     sw_window_valid_gen #(
         .N        (N /* default 3 */),
         .IMG_WIDTH(IMG_WIDTH /* default 32 */)
-     ) u_window_valid_gen (
+    ) u_window_valid_gen (
         .pixel_valid (pixel_valid),
         .col_idx     (col_idx),
         .stored_rows (stored_rows),
@@ -64,7 +64,7 @@ module sliding_window #(
     sw_window_extractor #(
         .N        (N /* default 3 */),
         .IMG_WIDTH(IMG_WIDTH /* default 32 */)
-     ) u_window_extractor (
+    ) u_window_extractor (
         .line_buf  (line_buf),
         .pixel_in  (pixel_in),
         .col_idx   (col_idx),

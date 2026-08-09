@@ -1,7 +1,7 @@
 module sw_window_valid_gen #(
     // Parameters
-        parameter N = 3,
-        parameter IMG_WIDTH = 32
+        parameter int unsigned N = 3,
+        parameter int unsigned IMG_WIDTH = 32
 ) (
     // Inputs
         input  logic        pixel_valid,    // flags a valid pixel is being received
