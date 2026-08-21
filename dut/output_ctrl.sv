@@ -1,68 +1,38 @@
-module output_ctl #(parameter out_width = 32 , out_height = 32)
-(
-	input clk,
-	input rst_n,				//synchronous
-	input pixel_last,			//Last output pixel indicator
-	input [15:0] pixel_in,		//Formatted output pixel
-	input pixel_valid,
-	output reg [15:0] pixel_out,
-	output reg pixel_out_valid,
-	output reg done					//sent to the global_ctrl
+module output_ctrl #(
+    // Parameters
+        parameter int N             = 3,
+        parameter int IMG_WIDTH     = 32,
+        parameter int IMG_HEIGHT    = 32,
+        parameter int OUT_WIDTH     = IMG_WIDTH  - N + 1,
+        parameter int OUT_HEIGHT    = IMG_HEIGHT - N + 1,
+        parameter int ADDR_W        = $clog2(OUT_WIDTH * OUT_HEIGHT)
+) (
+    // Inputs
+        input  logic                clk,        // risign edge triggered syste clk
+        input  logic                rst_n,      // synch active-low reset signal
+        input  logic                fmt_valid,  // flags a valid formatted output
+        input  logic                fmt_last,   // flags the last fmt_output of the feature map
+    // Output
+        output logic [ADDR_W-1 : 0] out_waddr,  // sent to output_mem to store the output
+        output logic                out_we,     // write enable sent to output_mem block
+        output logic                done        // sent to the global fsm
 );
-
-reg [15:0] row_cnt;				//row counter
-reg [15:0] col_cnt;				//column counter
 
 always_ff @(posedge clk)
 	begin
 		if(!rst_n)
 			begin
-				row_cnt <= 'd0;
-				col_cnt <= 'd0;
-				done <= 1'b0;
+				out_waddr <= 'd0;
 			end
-		else if (pixel_valid)
+		else if (fmt_valid)
 			begin
-				if (pixel_last)		//done
-					begin
-						row_cnt <= 'd0;
-						col_cnt <= 'd0;
-						done <= 1'b1;
-					end
-				else if(col_cnt == out_width - 1)
-					begin
-						row_cnt <= row_cnt + 1;
-						col_cnt <= 'd0;
-						done <= 1'b0;
-					end
+				if(fmt_last)
+					out_waddr <= 'd0;
 				else
-					begin
-						col_cnt <= col_cnt + 1;
-						done <= 1'b0;
-					end
-			end
-		else
-			done <= 1'b0;		//assume we end an image and at the next posedge the pixel_valid (or else) is still zero the counters will remaain zeros but...
-						//the image_done will remain 1 and we want it just for 1 clock cycle so at this state the image_done must return to zero 
-	end
-					
-always @(*)
-	begin
-		if (!rst_n)
-			begin
-				pixel_out = 'd0;		//avoid the unintentional latch
-				pixel_out_valid = 1'b0;
-			end
-		else if (pixel_valid)
-			begin
-				pixel_out = pixel_in;
-				pixel_out_valid = 1'b1;
-			end
-		else
-			begin
-				pixel_out = 'd0;		//avoid the unintentional latch
-				pixel_out_valid = 1'b0;
+					out_waddr <= out_waddr + 1;
 			end
 	end
+assign done = (fmt_last && fmt_valid);
+assign out_we = fmt_valid;
 
 endmodule
