@@ -4,7 +4,7 @@ package accelerator_pkg;
         PROCESSING,
         DONE
     } state_t;
-  
+
     typedef enum logic [1:0] {
         SHIFT_AMT,
         RELU_EN,
