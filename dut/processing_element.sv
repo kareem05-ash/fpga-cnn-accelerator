@@ -10,8 +10,13 @@ module processing_element #(
         output logic signed [PROD_W-1 : 0] product, // product signed output
         output logic               valid_out// flags that product is valid iff valid_in asserted
 );
+    // product_dsp signal is needed to infer a dsp blcok for each PE
+    (* use_dsp48 = "yes" *)
+    logic signed [PROD_W-1 : 0] product_dsp;
     logic signed [8:0] pixel_ext;
-    assign pixel_ext = {1'b0, pixel};
-    assign product = pixel_ext * coeff;
-    assign valid_out = valid_in;
+
+    assign pixel_ext    = {1'b0, pixel};
+    assign product_dsp  = pixel_ext * coeff;
+    assign product      = product_dsp;
+    assign valid_out    = valid_in;
 endmodule
