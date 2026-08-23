@@ -21,17 +21,11 @@ module output_ctrl #(
 always_ff @(posedge clk)
 	begin
 		if(!rst_n)
-			begin
-				out_waddr <= 'd0;
-			end
+			out_waddr <= 'd0;
 		else if (fmt_valid)
-			begin
-				if(fmt_last)
-					out_waddr <= 'd0;
-				else
-					out_waddr <= out_waddr + 1;
-			end
+			out_waddr <= out_waddr + 1;
 	end
+    
 assign done = (fmt_last && fmt_valid);
 assign out_we = fmt_valid;
 
