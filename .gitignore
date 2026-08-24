@@ -1,3 +1,4 @@
 # Questa unwanted files or directories
-*work/*
+**work/
 *.wlf
+**vsim*
