@@ -28,14 +28,16 @@ module sliding_window #(
     end
 
     // Window last signal logic
-    always_ff @(posedge clk) begin
+    /*always_ff @(posedge clk) begin
         if (!rst_n)
             window_last <= 1'b0;
         else if (pixel_last && pixel_valid)
             window_last <= 1'b1;
         else
             window_last <= 1'b0;
-    end
+    end*/
+	
+	assign window_last=(pixel_last && pixel_valid && rst_n)?1:0; //------------->edited
 
     sw_addr_manager #(
         .N        (N /* default 3 */),
