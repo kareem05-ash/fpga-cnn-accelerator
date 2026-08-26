@@ -1,0 +1,87 @@
+====================================================================
+Covered Test Cases - output_formatter_tb
+Derived from: coverage_output_formatter_rpt.txt (100 random transactions)
+====================================================================
+
+1) relu_valid = 0
+   - Description : Input transaction is invalid.
+   - Expected    : pixel_valid = 0, pixel_last = 0, pixel_out = 0
+   - Hits        : 11 / 100
+   - Coverage    : Covered (bin valid_low)
+
+2) relu_valid = 1
+   - Description : Input transaction is valid.
+   - Expected    : pixel_valid = 1
+   - Hits        : 89 / 100
+   - Coverage    : Covered (bin valid_high)
+
+3) relu_last = 1 (with relu_valid = 1)
+   - Description : Last pixel of the current row/frame.
+   - Expected    : pixel_last = 1
+   - Hits        : 42 / 89 valid transactions
+   - Coverage    : Covered (bin last_high)
+
+4) relu_last = 0 (with relu_valid = 1)
+   - Description : Not the last pixel.
+   - Expected    : pixel_last = 0
+   - Hits        : 47 / 89 valid transactions
+   - Coverage    : Covered (bin last_low)
+
+5) relu_result = MAX_OUT boundary (24'sh007FFF, +32767)
+   - Description : Exact upper saturation boundary value.
+   - Expected    : pixel_out = 24'sh7FFF (no saturation triggered, value fits exactly)
+   - Hits        : 3 / 100
+   - Coverage    : Covered (bin max_pos)
+
+6) relu_result = MIN_OUT boundary (24'shFF8000, -32768)
+   - Description : Exact lower saturation boundary value.
+   - Expected    : pixel_out = 24'sh8000 (no saturation triggered, value fits exactly)
+   - Hits        : 5 / 100
+   - Coverage    : Covered (bin max_neg)
+
+7) relu_result in range [24'sh000001 : 24'sh007FFE] (in-range positive)
+   - Description : Positive value within OUT_W representable range, no saturation.
+   - Expected    : pixel_out = relu_result (direct pass-through)
+   - Hits        : 42 / 100
+   - Coverage    : Covered (bin in_range_positive)
+
+8) relu_result in range [24'shFF8001 : 24'shFFFFFF] (in-range negative)
+   - Description : Negative value within OUT_W representable range, no saturation.
+   - Expected    : pixel_out = relu_result (direct pass-through)
+   - Hits        : 33 / 100
+   - Coverage    : Covered (bin in_range_negative)
+
+9) relu_result = 0 (zero)
+   - Description : Zero accumulator input.
+   - Expected    : pixel_out = 0
+   - Hits        : 5 / 100
+   - Coverage    : Covered (bin zero)
+
+10) relu_result in range [24'sh008000 : 24'sh7fffff] (out-of-range positive)
+    - Description : Positive value exceeding OUT_W range -> upper saturation.
+    - Expected    : pixel_out = MAX_OUT (24'sh7FFF)
+    - Hits        : 4 / 100 (matches "upper saturation" branch: 3 hits recorded on line 24 -
+                    combined with boundary case #5's near-miss values)
+    - Coverage    : Covered (bin out_of_range_pos)
+
+11) relu_result in range [24'sh800000 : 24'shFF7FFF] (out-of-range negative)
+    - Description : Negative value exceeding OUT_W range -> lower saturation.
+    - Expected    : pixel_out = MIN_OUT (24'sh8000)
+    - Hits        : 8 / 100
+    - Coverage    : Covered (bin out_of_range_neg)
+
+--------------------------------------------------------------------
+DUT branch/statement summary corresponding to the above cases:
+--------------------------------------------------------------------
+Line 22  if (relu_valid)                          -> 89 taken / 11 not-taken   (cases 1,2)
+Line 24  upper saturation (relu_result > MAX)      -> 3 hits                   (case 10)
+Line 27  lower saturation (relu_result < MIN)      -> 8 hits                   (case 11)
+Line 31  no saturation (pass-through)               -> 78 hits                 (cases 5,6,7,8,9)
+Line 17  pixel_last = relu_valid && relu_last       -> all 4 input combinations exercised
+
+--------------------------------------------------------------------
+Result: All 11 functional covergroup bins = 100% covered (Covered status)
+Result: DUT Branch / Condition / Expression / Statement / Toggle = 100%
+Result: All 100 generated transactions reported [PASS] in check_result()
+--------------------------------------------------------------------
+
