@@ -1,0 +1,595 @@
+Coverage Report by instance with details
+
+=================================================================================
+=== Instance: /output_formatter_tb/DUT
+=== Design Unit: work.output_formatter
+=================================================================================
+Branch Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Branches                         5         5         0   100.00%
+
+================================Branch Details================================
+
+Branch Coverage for instance /output_formatter_tb/DUT
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File output_formatter.sv
+------------------------------------IF Branch------------------------------------
+    22                                       101     Count coming in to IF
+    22              1                         89             if (relu_valid) begin
+                                              12     All False Count
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    24                                        89     Count coming in to IF
+    24              1                          3                 if (relu_result > signed'({{ACC_W-OUT_W{MAX_OUT[OUT_W-1]}}, MAX_OUT})) begin
+    27              1                          8                 end else if (relu_result < signed'({{ACC_W-OUT_W{MIN_OUT[OUT_W-1]}}, MIN_OUT})) begin
+    30              1                         78                 end else begin
+Branch totals: 3 hits of 3 branches = 100.00%
+
+
+Condition Coverage:
+    Enabled Coverage              Bins   Covered    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Conditions                       2         2         0   100.00%
+
+================================Condition Details================================
+
+Condition Coverage for instance /output_formatter_tb/DUT --
+
+  File output_formatter.sv
+----------------Focused Condition View-------------------
+Line       24 Item    1  (relu_result > 32767)
+Condition totals: 1 of 1 input term covered = 100.00%
+
+             Input Term   Covered  Reason for no coverage   Hint
+            -----------  --------  -----------------------  --------------
+  (relu_result > 32767)         Y
+
+     Rows:       Hits  FEC Target               Non-masking condition(s)      
+ ---------  ---------  --------------------     -------------------------     
+  Row   1:          1  (relu_result > 32767)_0  -                             
+  Row   2:          1  (relu_result > 32767)_1  -                             
+
+----------------Focused Condition View-------------------
+Line       27 Item    1  (relu_result < -32768)
+Condition totals: 1 of 1 input term covered = 100.00%
+
+              Input Term   Covered  Reason for no coverage   Hint
+             -----------  --------  -----------------------  --------------
+  (relu_result < -32768)         Y
+
+     Rows:       Hits  FEC Target                Non-masking condition(s)      
+ ---------  ---------  --------------------      -------------------------     
+  Row   1:          1  (relu_result < -32768)_0  -                             
+  Row   2:          1  (relu_result < -32768)_1  -                             
+
+
+Expression Coverage:
+    Enabled Coverage              Bins   Covered    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Expressions                      2         2         0   100.00%
+
+================================Expression Details================================
+
+Expression Coverage for instance /output_formatter_tb/DUT --
+
+  File output_formatter.sv
+----------------Focused Expression View-----------------
+Line       17 Item    1  (relu_valid && relu_last)
+Expression totals: 2 of 2 input terms covered = 100.00%
+
+  Input Term   Covered  Reason for no coverage   Hint
+ -----------  --------  -----------------------  --------------
+  relu_valid         Y
+   relu_last         Y
+
+     Rows:       Hits  FEC Target            Non-masking condition(s)      
+ ---------  ---------  --------------------  -------------------------     
+  Row   1:          1  relu_valid_0          -                             
+  Row   2:          1  relu_valid_1          relu_last                     
+  Row   3:          1  relu_last_0           relu_valid                    
+  Row   4:          1  relu_last_1           relu_valid                    
+
+
+Statement Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Statements                       6         6         0   100.00%
+
+================================Statement Details================================
+
+Statement Coverage for instance /output_formatter_tb/DUT --
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File output_formatter.sv
+    1                                                module output_formatter #(
+    2                                                    // Parameters
+    3                                                        parameter int unsigned ACC_W = 24,
+    4                                                        parameter int unsigned OUT_W = 16
+    5                                                ) (
+    6                                                    // Inputs
+    7                                                        input  logic                        relu_valid,
+    8                                                        input  logic                        relu_last,
+    9                                                        input  logic signed [ACC_W-1 : 0]   relu_result,
+    10                                                   // Outputs
+    11                                                       output logic signed [OUT_W-1 : 0]   pixel_out,
+    12                                                       output logic                        pixel_valid,
+    13                                                       output logic                        pixel_last
+    14                                               );
+    15                                                   localparam logic signed [OUT_W-1 : 0] MAX_OUT = {1'b0, {OUT_W-1{1'b1}}};
+    16                                                   localparam logic signed [OUT_W-1 : 0] MIN_OUT = {1'b1, {OUT_W-1{1'b0}}};
+    17              1                         70         assign pixel_last   = relu_valid && relu_last;
+    18                                                   assign pixel_valid  = relu_valid;
+    19                                                   /* Perform Saturation Only */
+    20              1                        101         always_comb begin
+    21              1                        101             pixel_out = '0;
+    22                                                       if (relu_valid) begin
+    23                                                           // upper saturation
+    24                                                           if (relu_result > signed'({{ACC_W-OUT_W{MAX_OUT[OUT_W-1]}}, MAX_OUT})) begin
+    25              1                          3                     pixel_out = MAX_OUT;
+    26                                                           // lower saturation
+    27                                                           end else if (relu_result < signed'({{ACC_W-OUT_W{MIN_OUT[OUT_W-1]}}, MIN_OUT})) begin
+    28              1                          8                     pixel_out = MIN_OUT;
+    29                                                           // no saturation
+    30                                                           end else begin
+    31              1                         78                     pixel_out = relu_result;
+
+Toggle Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Toggles                         88        88         0   100.00%
+
+================================Toggle Details================================
+
+Toggle Coverage for instance /output_formatter_tb/DUT --
+
+                                              Node      1H->0L      0L->1H  "Coverage"
+                                              ---------------------------------------
+                                        pixel_last           1           1      100.00 
+                                   pixel_out[15-0]           1           1      100.00 
+                                       pixel_valid           1           1      100.00 
+                                         relu_last           1           1      100.00 
+                                 relu_result[0-23]           1           1      100.00 
+                                        relu_valid           1           1      100.00 
+
+Total Node Count     =         44 
+Toggled Node Count   =         44 
+Untoggled Node Count =          0 
+
+Toggle Coverage      =     100.00% (88 of 88 bins)
+
+=================================================================================
+=== Instance: /output_formatter_tb
+=== Design Unit: work.output_formatter_tb
+=================================================================================
+Branch Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Branches                        15        11         4    73.33%
+
+================================Branch Details================================
+
+Branch Coverage for instance /output_formatter_tb
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File output_formatter_tb.sv
+------------------------------------IF Branch------------------------------------
+    32                                       100     Count coming in to IF
+    32              1                    ***0***     	if(!obj.randomize())
+    34              1                        100     	else
+Branch totals: 1 hit of 2 branches = 50.00%
+
+------------------------------------IF Branch------------------------------------
+    56                                       100     Count coming in to IF
+    56              1                         89     	if(obj.relu_valid)
+    70              1                         11     	else
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    59                                        89     Count coming in to IF
+    59              1                         42     			if(obj.relu_last)
+    61              1                         47     			else
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    63                                        89     Count coming in to IF
+    63              1                          3     			if(obj.relu_result > 24'sh007FFF)
+    65              1                          8     			else if(obj.relu_result < 24'shFF8000)
+    67              1                         78     			else
+Branch totals: 3 hits of 3 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    79                                       100     Count coming in to IF
+    79              1                        100     	if(expected_pixel_out == obj.actual_pixel_out)
+    81              1                    ***0***     	else
+Branch totals: 1 hit of 2 branches = 50.00%
+
+------------------------------------IF Branch------------------------------------
+    84                                       100     Count coming in to IF
+    84              1                        100     	if(expected_pixel_valid == obj.actual_pixel_valid)
+    86              1                    ***0***     	else
+Branch totals: 1 hit of 2 branches = 50.00%
+
+------------------------------------IF Branch------------------------------------
+    89                                       100     Count coming in to IF
+    89              1                        100     	if(expected_pixel_last == obj.actual_pixel_last)
+    91              1                    ***0***     	else
+Branch totals: 1 hit of 2 branches = 50.00%
+
+
+Condition Coverage:
+    Enabled Coverage              Bins   Covered    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Conditions                       5         2         3    40.00%
+
+================================Condition Details================================
+
+Condition Coverage for instance /output_formatter_tb --
+
+  File output_formatter_tb.sv
+----------------Focused Condition View-------------------
+Line       63 Item    1  (obj.relu_result > 32767)
+Condition totals: 1 of 1 input term covered = 100.00%
+
+                 Input Term   Covered  Reason for no coverage   Hint
+                -----------  --------  -----------------------  --------------
+  (obj.relu_result > 32767)         Y
+
+     Rows:       Hits  FEC Target                   Non-masking condition(s)      
+ ---------  ---------  --------------------         -------------------------     
+  Row   1:          1  (obj.relu_result > 32767)_0  -                             
+  Row   2:          1  (obj.relu_result > 32767)_1  -                             
+
+----------------Focused Condition View-------------------
+Line       65 Item    1  (obj.relu_result < -32768)
+Condition totals: 1 of 1 input term covered = 100.00%
+
+                  Input Term   Covered  Reason for no coverage   Hint
+                 -----------  --------  -----------------------  --------------
+  (obj.relu_result < -32768)         Y
+
+     Rows:       Hits  FEC Target                    Non-masking condition(s)      
+ ---------  ---------  --------------------          -------------------------     
+  Row   1:          1  (obj.relu_result < -32768)_0  -                             
+  Row   2:          1  (obj.relu_result < -32768)_1  -                             
+
+----------------Focused Condition View-------------------
+Line       79 Item    1  (expected_pixel_out == obj.actual_pixel_out)
+Condition totals: 0 of 1 input term covered = 0.00%
+
+                                    Input Term   Covered  Reason for no coverage   Hint
+                                   -----------  --------  -----------------------  --------------
+  (expected_pixel_out == obj.actual_pixel_out)         N  '_0' not hit             Hit '_0'
+
+     Rows:       Hits  FEC Target                                      Non-masking condition(s)      
+ ---------  ---------  --------------------                            -------------------------     
+  Row   1:    ***0***  (expected_pixel_out == obj.actual_pixel_out)_0  -                             
+  Row   2:          1  (expected_pixel_out == obj.actual_pixel_out)_1  -                             
+
+----------------Focused Condition View-------------------
+Line       84 Item    1  (expected_pixel_valid == obj.actual_pixel_valid)
+Condition totals: 0 of 1 input term covered = 0.00%
+
+                                        Input Term   Covered  Reason for no coverage   Hint
+                                       -----------  --------  -----------------------  --------------
+  (expected_pixel_valid == obj.actual_pixel_valid)         N  '_0' not hit             Hit '_0'
+
+     Rows:       Hits  FEC Target                                          Non-masking condition(s)      
+ ---------  ---------  --------------------                                -------------------------     
+  Row   1:    ***0***  (expected_pixel_valid == obj.actual_pixel_valid)_0  -                             
+  Row   2:          1  (expected_pixel_valid == obj.actual_pixel_valid)_1  -                             
+
+----------------Focused Condition View-------------------
+Line       89 Item    1  (expected_pixel_last == obj.actual_pixel_last)
+Condition totals: 0 of 1 input term covered = 0.00%
+
+                                      Input Term   Covered  Reason for no coverage   Hint
+                                     -----------  --------  -----------------------  --------------
+  (expected_pixel_last == obj.actual_pixel_last)         N  '_0' not hit             Hit '_0'
+
+     Rows:       Hits  FEC Target                                        Non-masking condition(s)      
+ ---------  ---------  --------------------                              -------------------------     
+  Row   1:    ***0***  (expected_pixel_last == obj.actual_pixel_last)_0  -                             
+  Row   2:          1  (expected_pixel_last == obj.actual_pixel_last)_1  -                             
+
+
+Statement Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Statements                      35        31         4    88.57%
+
+================================Statement Details================================
+
+Statement Coverage for instance /output_formatter_tb --
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File output_formatter_tb.sv
+    3                                                module output_formatter_tb;
+    4                                                
+    5                                                import transaction_pkg ::*;
+    6                                                parameter ACC_W_tb = 24;
+    7                                                parameter OUT_W_tb = 16;
+    8                                                
+    9                                                logic [ACC_W_tb-1:0] relu_result_tb;
+    10                                               logic relu_valid_tb;
+    11                                               logic relu_last_tb;
+    12                                               logic [OUT_W_tb-1:0] pixel_out_tb;
+    13                                               logic pixel_valid_tb;
+    14                                               logic pixel_last_tb;
+    15                                               
+    16                                               transaction pkt;
+    17                                               logic signed [OUT_W_tb-1:0] expected_pixel_out;
+    18                                               logic expected_pixel_valid;
+    19                                               logic expected_pixel_last;
+    20                                               
+    21                                               output_formatter #(.ACC_W(ACC_W_tb) , .OUT_W(OUT_W_tb)) DUT
+    22                                               (
+    23                                               	.relu_result(relu_result_tb),
+    24                                               	.relu_valid(relu_valid_tb),
+    25                                               	.relu_last(relu_last_tb),
+    26                                               	.pixel_out(pixel_out_tb),
+    27                                               	.pixel_valid(pixel_valid_tb),
+    28                                               	.pixel_last(pixel_last_tb)
+    29                                               );
+    30                                               
+    31                                               task automatic gen_stim (ref transaction obj);
+    32                                               	if(!obj.randomize())
+    33              1                    ***0***     		$display("ERROR IN RANDOMIZATION");
+    34                                               	else
+    35                                               		begin
+    36              1                        100     			pkt.cg.sample();
+    37              1                        100     			pkt.display_gen();
+    38                                               		end
+    39                                               endtask
+    40                                               
+    41                                               task drive_stim (transaction obj);
+    42              1                        100     	#1
+    43              1                        100     	relu_result_tb = obj.relu_result;
+    44              1                        100     	relu_valid_tb = obj.relu_valid;
+    45              1                        100     	relu_last_tb = obj.relu_last;
+    46                                               endtask
+    47                                               
+    48                                               task automatic collect_out (ref transaction obj);
+    49              1                        100     	#1; 
+    50              1                        100     	obj.actual_pixel_out = pixel_out_tb;
+    51              1                        100     	obj.actual_pixel_valid = pixel_valid_tb;
+    52              1                        100     	obj.actual_pixel_last = pixel_last_tb;
+    53                                               endtask
+    54                                               
+    55                                               function automatic void golden_model (transaction obj , ref logic signed [OUT_W_tb-1:0] expected_pixel_out , ref logic expected_pixel_valid , ref logic expected_pixel_last);
+    56                                               	if(obj.relu_valid)
+    57                                               		begin
+    58              1                         89     			expected_pixel_valid = 1'b1;
+    59                                               			if(obj.relu_last)
+    60              1                         42     				expected_pixel_last = 1'b1;
+    61                                               			else
+    62              1                         47     				expected_pixel_last = 1'b0;
+    63                                               			if(obj.relu_result > 24'sh007FFF)
+    64              1                          3     				expected_pixel_out = 24'sh007FFF;
+    65                                               			else if(obj.relu_result < 24'shFF8000)
+    66              1                          8     				expected_pixel_out = 24'shFF8000;
+    67                                               			else
+    68              1                         78     				expected_pixel_out = obj.relu_result;
+    69                                               		end
+    70                                               	else
+    71                                               		begin
+    72              1                         11     			expected_pixel_valid = 1'b0;
+    73              1                         11     			expected_pixel_last = 1'b0;
+    74              1                         11     			expected_pixel_out = 'd0;
+    75                                               		end
+    76                                               endfunction
+    77                                               
+    78                                               function void check_result (logic signed [OUT_W_tb-1:0] expected_pixel_out , logic expected_pixel_valid , logic expected_pixel_last , transaction obj);
+    79                                               	if(expected_pixel_out == obj.actual_pixel_out)
+    80              1                        100     		$display("[PASS] the expected_pixel_out = %d , the actual_pixel_out = %d" , expected_pixel_out , obj.actual_pixel_out);
+    81                                               	else
+    82              1                    ***0***     		$display("[FAIL] SOMTHING WRONG IN THE OUTPUT , expected_pixel_out = %d , actual_pixel_out = %d" , expected_pixel_out , obj.actual_pixel_out);
+    83                                               	
+    84                                               	if(expected_pixel_valid == obj.actual_pixel_valid)
+    85              1                        100     		$display("[PASS] the expected_pixel_valid = %b , the actual_pixel_valid = %b" , expected_pixel_valid , obj.actual_pixel_valid);
+    86                                               	else
+    87              1                    ***0***     		$display("[FAIL] SOMTHING WRONG IN THE VALID SIGNAL , expected_pixel_valid = %b , actual_pixel_valid = %b" , expected_pixel_valid , obj.actual_pixel_valid);
+    88                                               		
+    89                                               	if(expected_pixel_last == obj.actual_pixel_last)
+    90              1                        100     		$display("[PASS] the expected_pixel_last = %b , the actual_pixel_last = %b" , expected_pixel_last , obj.actual_pixel_last);
+    91                                               	else
+    92              1                    ***0***     		$display("[FAIL] SOMTHING WRONG IN THE LAST SIGNAL , expected_pixel_last = %b , actual_pixel_last = %b" , expected_pixel_last , obj.actual_pixel_last);
+    93                                               endfunction
+    94                                               
+    95                                               initial 
+    96                                               	begin
+    97              1                          1     		pkt = new();
+    98              1                        100     		repeat (100)
+    99                                               			begin
+    100             1                        100     				#1
+    101             1                        100     				gen_stim(pkt);
+    102             1                        100     				drive_stim(pkt);
+    103             1                        100     				golden_model(pkt , expected_pixel_out , expected_pixel_valid , expected_pixel_last);
+    104             1                        100             			collect_out(pkt);
+    105             1                        100     				check_result(expected_pixel_out , expected_pixel_valid , expected_pixel_last , pkt);
+    106                                                  			end
+    107             1                          1     		$stop;
+
+Toggle Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Toggles                        124       124         0   100.00%
+
+================================Toggle Details================================
+
+Toggle Coverage for instance /output_formatter_tb --
+
+                                              Node      1H->0L      0L->1H  "Coverage"
+                                              ---------------------------------------
+                               expected_pixel_last           1           1      100.00 
+                          expected_pixel_out[0-15]           1           1      100.00 
+                              expected_pixel_valid           1           1      100.00 
+                                     pixel_last_tb           1           1      100.00 
+                                pixel_out_tb[0-15]           1           1      100.00 
+                                    pixel_valid_tb           1           1      100.00 
+                                      relu_last_tb           1           1      100.00 
+                              relu_result_tb[0-23]           1           1      100.00 
+                                     relu_valid_tb           1           1      100.00 
+
+Total Node Count     =         62 
+Toggled Node Count   =         62 
+Untoggled Node Count =          0 
+
+Toggle Coverage      =     100.00% (124 of 124 bins)
+
+=================================================================================
+=== Instance: /transaction_pkg
+=== Design Unit: work.transaction_pkg
+=================================================================================
+
+Covergroup Coverage:
+    Covergroups                      1        na        na   100.00%
+        Coverpoints/Crosses          3        na        na        na
+            Covergroup Bins         11        11         0   100.00%
+----------------------------------------------------------------------------------------------------------
+Covergroup                                             Metric       Goal       Bins    Status               
+                                                                                                         
+----------------------------------------------------------------------------------------------------------
+ TYPE /transaction_pkg/transaction/cg                 100.00%        100          -    Covered              
+    covered/total bins:                                    11         11          -                      
+    missing/total bins:                                     0         11          -                      
+    % Hit:                                            100.00%        100          -                      
+    Coverpoint valid_c                                100.00%        100          -    Covered              
+        covered/total bins:                                 2          2          -                      
+        missing/total bins:                                 0          2          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin valid_high                                     89          1          -    Covered              
+        bin valid_low                                      11          1          -    Covered              
+    Coverpoint last_c                                 100.00%        100          -    Covered              
+        covered/total bins:                                 2          2          -                      
+        missing/total bins:                                 0          2          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin last_high                                      45          1          -    Covered              
+        bin last_low                                       55          1          -    Covered              
+    Coverpoint result_c                               100.00%        100          -    Covered              
+        covered/total bins:                                 7          7          -                      
+        missing/total bins:                                 0          7          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin max_neg                                         5          1          -    Covered              
+        bin max_pos                                         3          1          -    Covered              
+        bin in_range_negative                              33          1          -    Covered              
+        bin in_range_positive                              42          1          -    Covered              
+        bin zero                                            5          1          -    Covered              
+        bin out_of_range_pos                                4          1          -    Covered              
+        bin out_of_range_neg                                8          1          -    Covered              
+Statement Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Statements                       5         5         0   100.00%
+
+================================Statement Details================================
+
+Statement Coverage for instance /transaction_pkg --
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File transaction_pkg.sv
+    1                                                package transaction_pkg;
+    2                                                	class transaction;
+    3                                                		parameter ACC_W = 24;
+    4                                                		parameter OUT_W = 16;
+    5                                                		
+    6                                                		rand logic signed [ACC_W-1:0] relu_result;
+    7                                                		rand logic relu_valid;
+    8                                                		rand logic relu_last;
+    9                                                		logic signed [OUT_W-1:0] actual_pixel_out;
+    10                                               		logic actual_pixel_valid;
+    11                                               		logic actual_pixel_last;
+    12                                               		
+    13                                               		constraint RELU_RANGE {
+    14                                               			relu_result dist {[24'sh000001 : 24'sh007FFE] :/ 40 ,
+    15                                               					  [24'shFF8001 : 24'shFFFFFF] :/ 40 ,
+    16                                               					   24'sh007FFF                 :/ 5 ,
+    17                                               					   24'shFF8000                 :/ 5 ,
+    18                                               					   24'd0                       :/ 5 ,
+    19                                               					  [24'sh008000 : 24'sh7fffff] :/ 5  ,
+    20                                               					  [24'sh800000 : 24'shFF7FFF] :/ 5 };
+    21                                               		}
+    22                                               		
+    23                                               		constraint VALID {
+    24                                               			relu_valid dist {1'b1 := 90 , 1'b0 := 10};
+    25                                               		}
+    26                                               		
+    27                                               		constraint LAST {
+    28                                               			relu_last dist {1'b1 := 50 , 1'b0 := 50};
+    29                                               		}
+    30                                               		
+    31                                               		task display_gen ();
+    32              1                        100     			$display("============== generated values ===========");
+    33              1                        100     			$display("relu_result = %d" , relu_result);		//display pos & neg
+    34              1                        100     			$display("relu_valid = %b" , relu_valid);
+    35              1                        100     			$display("relu_last = %b" , relu_last);
+    36                                               		endtask
+    37                                               
+    38                                               		covergroup cg;
+    39                                               			valid_c: coverpoint relu_valid {
+    40                                               				bins valid_high = {1'b1};
+    41                                               				bins valid_low = {1'b0};
+    42                                               			}
+    43                                               			
+    44                                               			last_c: coverpoint relu_last {
+    45                                               				bins last_high = {1'b1};
+    46                                               				bins last_low = {1'b0};
+    47                                               			}
+    48                                               			result_c: coverpoint relu_result {
+    49                                               				bins max_neg = {24'shFF8000};
+    50                                               				bins max_pos = {24'sh007FFF};
+    51                                               				bins in_range_negative = {[24'shFF8001 : 24'shFFFFFF]};
+    52                                               				bins in_range_positive = {[24'sh000001 : 24'sh007FFE]};
+    53                                               				bins zero = {24'd0};
+    54                                               				bins out_of_range_pos = {[24'sh008000:24'sh7fffff]};
+    55                                               				bins out_of_range_neg = {[24'sh800000:24'shFF7FFF]};
+    56                                               			}
+    57                                               		endgroup
+    58                                               		function new();
+    59              1                          1     			cg = new();
+
+
+COVERGROUP COVERAGE:
+----------------------------------------------------------------------------------------------------------
+Covergroup                                             Metric       Goal       Bins    Status               
+                                                                                                         
+----------------------------------------------------------------------------------------------------------
+ TYPE /transaction_pkg/transaction/cg                 100.00%        100          -    Covered              
+    covered/total bins:                                    11         11          -                      
+    missing/total bins:                                     0         11          -                      
+    % Hit:                                            100.00%        100          -                      
+    Coverpoint valid_c                                100.00%        100          -    Covered              
+        covered/total bins:                                 2          2          -                      
+        missing/total bins:                                 0          2          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin valid_high                                     89          1          -    Covered              
+        bin valid_low                                      11          1          -    Covered              
+    Coverpoint last_c                                 100.00%        100          -    Covered              
+        covered/total bins:                                 2          2          -                      
+        missing/total bins:                                 0          2          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin last_high                                      45          1          -    Covered              
+        bin last_low                                       55          1          -    Covered              
+    Coverpoint result_c                               100.00%        100          -    Covered              
+        covered/total bins:                                 7          7          -                      
+        missing/total bins:                                 0          7          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin max_neg                                         5          1          -    Covered              
+        bin max_pos                                         3          1          -    Covered              
+        bin in_range_negative                              33          1          -    Covered              
+        bin in_range_positive                              42          1          -    Covered              
+        bin zero                                            5          1          -    Covered              
+        bin out_of_range_pos                                4          1          -    Covered              
+        bin out_of_range_neg                                8          1          -    Covered              
+
+TOTAL COVERGROUP COVERAGE: 100.00%  COVERGROUP TYPES: 1
+
+Total Coverage By Instance (filtered view): 88.07%
+

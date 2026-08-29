@@ -1,0 +1,700 @@
+Coverage Report by instance with details
+
+=================================================================================
+=== Instance: /global_ctrl_tb/DUT
+=== Design Unit: work.global_ctrl
+=================================================================================
+Branch Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Branches                        10        10         0   100.00%
+
+================================Branch Details================================
+
+Branch Coverage for instance /global_ctrl_tb/DUT
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File global_ctrl.sv
+------------------------------------IF Branch------------------------------------
+    16                                        35     Count coming in to IF
+    16              1                          5     		if(!rst_n) cu_state<=IDLE;
+    17              1                         30     		else cu_state<=nx_state;
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------CASE Branch------------------------------------
+    24                                        62     Count coming in to CASE
+    25              1                         19     			IDLE: begin                   // STATE_1 WAIT FOR START SIGNAL 
+    29              1                         29     			PROCESSING: begin            // STATE_2 EN_PROCESSING AND BUSY  WAIT FOR DONE SIGNAL
+    35              1                         12     			DONE: begin                 // STATE_3 SEND DONE SIGNAL 
+    39              1                          2     			default: begin             // DEFAULT RETURN TO IDLE 
+Branch totals: 4 hits of 4 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    26                                        19     Count coming in to IF
+    26              1                         12     				if(start==1) nx_state=PROCESSING;
+    27              1                          7     				else nx_state=IDLE;
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    32                                        29     Count coming in to IF
+    32              1                          8     				if(output_done==1) nx_state=DONE;
+    33              1                         21     				else nx_state=PROCESSING;
+Branch totals: 2 hits of 2 branches = 100.00%
+
+
+FSM Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    FSM States                       3         3         0   100.00%
+    FSM Transitions                  4         4         0   100.00%
+
+================================FSM Details================================
+
+FSM Coverage for instance /global_ctrl_tb/DUT --
+
+FSM_ID: cu_state
+    Current State Object : cu_state
+    ----------------------
+    State Value MapInfo :
+    ---------------------
+Line          State Name               Value
+----          ----------               -----
+  25                IDLE                   0
+  29          PROCESSING                   1
+  35                DONE                   2
+    Covered States :
+    ----------------
+                   State           Hit_count
+                   -----           ---------
+                    IDLE                  14          
+              PROCESSING                  14          
+                    DONE                   7          
+    Covered Transitions :
+    ---------------------
+Line            Trans_ID           Hit_count          Transition          
+----            --------           ---------          ----------          
+  26                   0                   8          IDLE -> PROCESSING            
+  32                   1                   7          PROCESSING -> DONE            
+  16                   2                   1          PROCESSING -> IDLE            
+  37                   3                   7          DONE -> IDLE                  
+
+
+    Summary                       Bins      Hits    Misses  Coverage
+    -------                       ----      ----    ------  --------
+        FSM States                   3         3         0   100.00%
+        FSM Transitions              4         4         0   100.00%
+Statement Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Statements                      16        16         0   100.00%
+
+================================Statement Details================================
+
+Statement Coverage for instance /global_ctrl_tb/DUT --
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File global_ctrl.sv
+    3                                                module global_ctrl(
+    4                                                	input wire logic clk, 
+    5                                                	input wire logic rst_n, 
+    6                                                	input wire logic start, 
+    7                                                	input wire logic output_done,
+    8                                                	output logic busy, 
+    9                                                	output logic done,
+    10                                               	output logic processing_en
+    11                                               	);
+    12                                               	
+    13                                               	state_t cu_state, nx_state;
+    14                                               					
+    15              1                         35     	always_ff@(posedge clk) begin   // REGISTER CU_STATE 
+    16              1                          5     		if(!rst_n) cu_state<=IDLE;
+    17              1                         30     		else cu_state<=nx_state;
+    18                                               	end
+    19                                               	
+    20              1                         62     	always_comb begin 
+    21              1                         62     		processing_en=0;        // DEFAULT VALUES  
+    22              1                         62     		done=0;
+    23              1                         62     		busy=0;
+    24                                               		case(cu_state) 
+    25                                               			IDLE: begin                   // STATE_1 WAIT FOR START SIGNAL 
+    26              1                         12     				if(start==1) nx_state=PROCESSING;
+    27              1                          7     				else nx_state=IDLE;
+    28                                               			end
+    29                                               			PROCESSING: begin            // STATE_2 EN_PROCESSING AND BUSY  WAIT FOR DONE SIGNAL
+    30              1                         29     				processing_en=1;
+    31              1                         29     				busy=1;
+    32              1                          8     				if(output_done==1) nx_state=DONE;
+    33              1                         21     				else nx_state=PROCESSING;
+    34                                               			end
+    35                                               			DONE: begin                 // STATE_3 SEND DONE SIGNAL 
+    36              1                         12     				done=1;
+    37              1                         12     				nx_state=IDLE;
+    38                                               			end
+    39                                               			default: begin             // DEFAULT RETURN TO IDLE 
+    40              1                          2     				nx_state=IDLE;
+
+Toggle Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Toggles                         20        20         0   100.00%
+
+================================Toggle Details================================
+
+Toggle Coverage for instance /global_ctrl_tb/DUT --
+
+                                              Node      1H->0L      0L->1H                          "Coverage"
+                                              ---------------------------------------------------------------
+                                              busy           1           1                              100.00 
+                                               clk           1           1                              100.00 
+                                          cu_state               ENUM type       Value       Count 
+                                                                      IDLE           1      100.00 
+                                                                PROCESSING           1      100.00 
+                                                                      DONE           1      100.00 
+                                              done           1           1                              100.00 
+                                          nx_state               ENUM type       Value       Count 
+                                                                      IDLE           1      100.00 
+                                                                PROCESSING           1      100.00 
+                                                                      DONE           1      100.00 
+                                       output_done           1           1                              100.00 
+                                     processing_en           1           1                              100.00 
+                                             rst_n           1           1                              100.00 
+                                             start           1           1                              100.00 
+
+Total Node Count     =         13 
+Toggled Node Count   =         13 
+Untoggled Node Count =          0 
+
+Toggle Coverage      =     100.00% (20 of 20 bins)
+
+=================================================================================
+=== Instance: /global_ctrl_tb
+=== Design Unit: work.global_ctrl_tb
+=================================================================================
+Branch Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Branches                        22        11        11    50.00%
+
+================================Branch Details================================
+
+Branch Coverage for instance /global_ctrl_tb
+NOTE: The modification timestamp for source file 'global_ctrl_tb.sv' has been altered since compilation.
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File global_ctrl_tb.sv
+------------------------------------IF Branch------------------------------------
+    34                                        50     Count coming in to IF
+    34              1                    ***0***     	task automatic gen_stim (ref transaction obj);
+    36              1                         50     			$display("Randomization Failed");
+Branch totals: 1 hit of 2 branches = 50.00%
+
+------------------------------------IF Branch------------------------------------
+    58                                        50     Count coming in to IF
+    58              1                          4         
+    62              1                         46         			end
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------CASE Branch------------------------------------
+    64                                        46     Count coming in to CASE
+    65              1                    ***0***             			case(exp_state)
+    66              1                    ***0***                 			IDLE: next_state = obj.start ? PROCESSING : IDLE;
+    67              1                    ***0***                 			PROCESSING: next_state = obj.output_done ? DONE : PROCESSING;
+    68              1                         46                 			DONE: next_state = IDLE;
+Branch totals: 1 hit of 4 branches = 25.00%
+
+------------------------------------IF Branch------------------------------------
+    65                                   ***0***     Count coming in to IF
+    65              2                    ***0***             			case(exp_state)
+    65              3                    ***0***             			case(exp_state)
+Branch totals: 0 hits of 2 branches = 0.00%
+
+------------------------------------IF Branch------------------------------------
+    66                                   ***0***     Count coming in to IF
+    66              2                    ***0***                 			IDLE: next_state = obj.start ? PROCESSING : IDLE;
+    66              3                    ***0***                 			IDLE: next_state = obj.start ? PROCESSING : IDLE;
+Branch totals: 0 hits of 2 branches = 0.00%
+
+------------------------------------CASE Branch------------------------------------
+    72                                        50     Count coming in to CASE
+    73              1                         50         		case(next_state)
+    78              1                    ***0***     		     end
+    83              1                    ***0***     			    end
+    88              1                    ***0***     		      end
+Branch totals: 1 hit of 4 branches = 25.00%
+
+------------------------------------IF Branch------------------------------------
+    99                                        50     Count coming in to IF
+    99              1                         22     	function void check_result (logic exp_busy , logic exp_done , logic exp_processing_en , transaction obj);
+    101             1                         28     			$display("[PASS] The Busy is Succesful , exp_busy = %b , actual_busy = %b" , exp_busy , obj.actual_busy);
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    104                                       50     Count coming in to IF
+    104             1                         43     		
+    106             1                          7     			$display("[PASS] The Done is Succesful , exp_done = %b , actual_done = %b" , exp_done , obj.actual_done);
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    109                                       50     Count coming in to IF
+    109             1                         22     			
+    111             1                         28     			$display("[PASS] The Processing Enable is Succesful , exp_processing_en = %b , actual_processing_en = %b" , exp_processing_en , obj.actual_processing_en);
+Branch totals: 2 hits of 2 branches = 100.00%
+
+
+Condition Coverage:
+    Enabled Coverage              Bins   Covered    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Conditions                       3         3         0   100.00%
+
+================================Condition Details================================
+
+Condition Coverage for instance /global_ctrl_tb --
+NOTE: The modification timestamp for source file 'global_ctrl_tb.sv' has been altered since compilation.
+
+  File global_ctrl_tb.sv
+----------------Focused Condition View-------------------
+Line       99 Item    1  (exp_busy == obj.actual_busy)
+Condition totals: 1 of 1 input term covered = 100.00%
+
+                     Input Term   Covered  Reason for no coverage   Hint
+                    -----------  --------  -----------------------  --------------
+  (exp_busy == obj.actual_busy)         Y
+
+     Rows:       Hits  FEC Target                       Non-masking condition(s)      
+ ---------  ---------  --------------------             -------------------------     
+  Row   1:          1  (exp_busy == obj.actual_busy)_0  -                             
+  Row   2:          1  (exp_busy == obj.actual_busy)_1  -                             
+
+----------------Focused Condition View-------------------
+Line       104 Item    1  (exp_done == obj.actual_done)
+Condition totals: 1 of 1 input term covered = 100.00%
+
+                     Input Term   Covered  Reason for no coverage   Hint
+                    -----------  --------  -----------------------  --------------
+  (exp_done == obj.actual_done)         Y
+
+     Rows:       Hits  FEC Target                       Non-masking condition(s)      
+ ---------  ---------  --------------------             -------------------------     
+  Row   1:          1  (exp_done == obj.actual_done)_0  -                             
+  Row   2:          1  (exp_done == obj.actual_done)_1  -                             
+
+----------------Focused Condition View-------------------
+Line       109 Item    1  (exp_processing_en == obj.actual_processing_en)
+Condition totals: 1 of 1 input term covered = 100.00%
+
+                                       Input Term   Covered  Reason for no coverage   Hint
+                                      -----------  --------  -----------------------  --------------
+  (exp_processing_en == obj.actual_processing_en)         Y
+
+     Rows:       Hits  FEC Target                                         Non-masking condition(s)      
+ ---------  ---------  --------------------                               -------------------------     
+  Row   1:          1  (exp_processing_en == obj.actual_processing_en)_0  -                             
+  Row   2:          1  (exp_processing_en == obj.actual_processing_en)_1  -                             
+
+
+Statement Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Statements                      52        39        13    75.00%
+
+================================Statement Details================================
+
+Statement Coverage for instance /global_ctrl_tb --
+NOTE: The modification timestamp for source file 'global_ctrl_tb.sv' has been altered since compilation.
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File global_ctrl_tb.sv
+    3                                                module global_ctrl_tb;
+    4                                                
+    5                                                import global_ctrl_transaction_pkg ::*;
+    6                                                import accelerator_pkg ::*;
+    7                                                	logic clk_tb;
+    8                                                	logic rst_n_tb;
+    9                                                	logic start_tb;
+    10                                               	logic output_done_tb;
+    11                                               	logic busy_tb;
+    12                                               	logic done_tb;
+    13                                               	logic processing_en_tb;
+    14                                               	
+    15                                               	transaction pkt;
+    16                                               	state_t exp_state;
+    17                                               	logic exp_busy;
+    18                                               	logic exp_done;
+    19                                               	logic exp_processing_en;
+    20                                               	
+    21                                               	global_ctrl DUT
+    22                                               	(
+    23                                               		.clk(clk_tb),
+    24                                               		.rst_n(rst_n_tb),
+    25                                               		.start(start_tb),
+    26                                               		.output_done(output_done_tb),
+    27                                               		.busy(busy_tb),
+    28                                               		.done(done_tb),
+    29                                               		.processing_en(processing_en_tb)
+    30                                               	);
+    31              1                        105     	
+    31              2                        104     
+    32                                               	always #5 clk_tb = ~clk_tb;
+    33                                               	
+    34                                               	task automatic gen_stim (ref transaction obj);
+    35              1                    ***0***     		if(!obj.randomize())
+    36                                               			$display("Randomization Failed");
+    37                                               		else
+    38              1                         50     			begin
+    39              1                         50     				obj.cg.sample();
+    40                                               				obj.display_gen();
+    41                                               			end
+    42                                               	endtask
+    43                                               	
+    44              1                         50     	task drive_stim (transaction obj);
+    45              1                         50     		rst_n_tb = obj.rst_n;
+    46              1                         50     		start_tb = obj.start;
+    47                                               		output_done_tb = obj.output_done;
+    48                                               	endtask
+    49                                               	
+    50              1                         50     	task automatic collect_stim (ref transaction obj);
+    51              1                         50     		obj.actual_busy = busy_tb;
+    52              1                         50     		obj.actual_done = done_tb;
+    53                                               		obj.actual_processing_en = processing_en_tb;
+    54                                               	endtask
+    55                                               	
+    56                                               	function automatic void golden_model(transaction obj, ref logic exp_busy, ref logic exp_done, ref logic exp_processing_en);
+    57                                                   		state_t next_state;
+    58                                                   
+    59                                                   		if(!obj.rst_n) 
+    60              1                          4     			begin
+    61                                                       			next_state = IDLE;
+    62                                                   			end
+    63                                                   		else 
+    64                                               			begin
+    65              1                    ***0***             			case(exp_state)
+    66              1                    ***0***                 			IDLE: next_state = obj.start ? PROCESSING : IDLE;
+    67              1                    ***0***                 			PROCESSING: next_state = obj.output_done ? DONE : PROCESSING;
+    68              1                         46                 			DONE: next_state = IDLE;
+    69                                                           			default: next_state = IDLE;
+    70                                                       			endcase
+    71                                                   			end
+    72                                                   
+    73                                                   		case(next_state)
+    74              1                         50             	IDLE: begin 
+    75              1                         50     			exp_busy=1'b0; 
+    76              1                         50     			exp_done=1'b0; 
+    77                                               			exp_processing_en=1'b0; 
+    78                                               		     end
+    79              1                    ***0***             	PROCESSING: begin 
+    80              1                    ***0***     				exp_busy=1'b1; 
+    81              1                    ***0***     				exp_done=1'b0; 
+    82                                               				exp_processing_en=1'b1; 
+    83                                               			    end
+    84              1                    ***0***             	DONE: begin 
+    85              1                    ***0***     			exp_busy=1'b0; 
+    86              1                    ***0***     			exp_done=1'b1; 
+    87                                               			exp_processing_en=1'b0; 
+    88                                               		      end
+    89              1                    ***0***             	default: begin 
+    90              1                    ***0***     				exp_busy=1'b0; 
+    91              1                    ***0***     				exp_done=1'b0; 
+    92                                               				exp_processing_en=1'b0; 
+    93                                               			end
+    94                                                   		endcase
+    95              1                         50         
+    96                                                   		exp_state = next_state;
+    97                                               endfunction
+    98                                               
+    99                                               	function void check_result (logic exp_busy , logic exp_done , logic exp_processing_en , transaction obj);
+    100             1                         22     		if(exp_busy == obj.actual_busy)
+    101                                              			$display("[PASS] The Busy is Succesful , exp_busy = %b , actual_busy = %b" , exp_busy , obj.actual_busy);
+    102             1                         28     		else 
+    103                                              			$display("[FAIL] The Busy Has a Problem , exp_busy = %b , actual_busy = %b" , exp_busy , obj.actual_busy);
+    104                                              		
+    105             1                         43     		if(exp_done == obj.actual_done)
+    106                                              			$display("[PASS] The Done is Succesful , exp_done = %b , actual_done = %b" , exp_done , obj.actual_done);
+    107             1                          7     		else 
+    108                                              			$display("[FAIL] The Done Has a Problem , exp_done = %b , actual_done = %b" , exp_done , obj.actual_done);
+    109                                              			
+    110             1                         22     		if(exp_processing_en == obj.actual_processing_en)
+    111                                              			$display("[PASS] The Processing Enable is Succesful , exp_processing_en = %b , actual_processing_en = %b" , exp_processing_en , obj.actual_processing_en);
+    112             1                         28     		else 
+    113                                              			$display("[FAIL] The Processing Enable Has a Problem , exp_processing_en = %b , actual_processing_en = %b" , exp_processing_en , obj.actual_processing_en);
+    114                                              	endfunction
+    115                                              
+    116                                              	initial
+    117             1                          1     		begin
+    118             1                          1     			pkt = new();
+    119             1                          1     			exp_state = IDLE;
+    120             1                          1     			clk_tb = 1'b0;
+    121             1                          1     			rst_n_tb = 1'b0;
+    122             1                          1     			start_tb = 1'b0;
+    123             1                          1     			output_done_tb = 1'b0;
+    124                                              			@(negedge clk_tb);
+    125             1                         50     			rst_n_tb = 1'b1;
+    126                                              			
+    127             1                         50     			repeat(100)
+    128             1                         50     				begin
+    129             1                         50     					gen_stim(pkt);
+    130             1                         50     					drive_stim(pkt);
+    131             1                         50     					@(negedge clk_tb);
+    132             1                         50     					collect_stim(pkt);
+    133                                              					golden_model(pkt , exp_busy , exp_done , exp_processing_en);
+    134             1                          1     					check_result(exp_busy , exp_done , exp_processing_en , pkt);
+    135             1                          1     				end
+    136             1                          1     			$display("============ SIMULATION FINISHED ===========");
+
+Toggle Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Toggles                         20        14         6    70.00%
+
+================================Toggle Details================================
+
+Toggle Coverage for instance /global_ctrl_tb --
+
+                                              Node      1H->0L      0L->1H                          "Coverage"
+                                              ---------------------------------------------------------------
+                                           busy_tb           1           1                              100.00 
+                                            clk_tb           1           1                              100.00 
+                                           done_tb           1           1                              100.00 
+                                          exp_busy           0           0                                0.00 
+                                          exp_done           0           0                                0.00 
+                                 exp_processing_en           0           0                                0.00 
+                                    output_done_tb           1           1                              100.00 
+                                  processing_en_tb           1           1                              100.00 
+                                          rst_n_tb           1           1                              100.00 
+                                          start_tb           1           1                              100.00 
+
+Total Node Count     =         10 
+Toggled Node Count   =          7 
+Untoggled Node Count =          3 
+
+Toggle Coverage      =      70.00% (14 of 20 bins)
+
+=================================================================================
+=== Instance: /global_ctrl_transaction_pkg
+=== Design Unit: work.global_ctrl_transaction_pkg
+=================================================================================
+
+Covergroup Coverage:
+    Covergroups                      1        na        na   100.00%
+        Coverpoints/Crosses          8        na        na        na
+            Covergroup Bins         20        20         0   100.00%
+----------------------------------------------------------------------------------------------------------
+Covergroup                                             Metric       Goal       Bins    Status               
+                                                                                                         
+----------------------------------------------------------------------------------------------------------
+ TYPE /global_ctrl_transaction_pkg/transaction/cg     100.00%        100          -    Covered              
+    covered/total bins:                                    20         20          -                      
+    missing/total bins:                                     0         20          -                      
+    % Hit:                                            100.00%        100          -                      
+    Coverpoint reset_c                                100.00%        100          -    Covered              
+        covered/total bins:                                 2          2          -                      
+        missing/total bins:                                 0          2          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin rst_active                                      4          1          -    Covered              
+        bin rst_inactive                                   46          1          -    Covered              
+    Coverpoint start_c                                100.00%        100          -    Covered              
+        covered/total bins:                                 2          2          -                      
+        missing/total bins:                                 0          2          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin start_high                                     32          1          -    Covered              
+        bin start_low                                      18          1          -    Covered              
+    Coverpoint done_c                                 100.00%        100          -    Covered              
+        covered/total bins:                                 2          2          -                      
+        missing/total bins:                                 0          2          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin end_reach                                      10          1          -    Covered              
+        bin continue_send                                  40          1          -    Covered              
+    Coverpoint busy_c                                 100.00%        100          -    Covered              
+        covered/total bins:                                 2          2          -                      
+        missing/total bins:                                 0          2          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin busy_active                                    28          1          -    Covered              
+        bin busy_inactive                                  21          1          -    Covered              
+    Coverpoint done_out_c                             100.00%        100          -    Covered              
+        covered/total bins:                                 2          2          -                      
+        missing/total bins:                                 0          2          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin done_active                                     6          1          -    Covered              
+        bin done_inactive                                  43          1          -    Covered              
+    Coverpoint processing_en_c                        100.00%        100          -    Covered              
+        covered/total bins:                                 2          2          -                      
+        missing/total bins:                                 0          2          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin pe_active                                      28          1          -    Covered              
+        bin pe_inactive                                    21          1          -    Covered              
+    Cross start_x_busy                                100.00%        100          -    Covered              
+        covered/total bins:                                 4          4          -                      
+        missing/total bins:                                 0          4          -                      
+        % Hit:                                        100.00%        100          -                      
+        Auto, Default and User Defined Bins:
+            bin start_in_busy                              18          1          -    Covered              
+            bin <start_low,busy_inactive>                   8          1          -    Covered              
+            bin <start_low,busy_active>                    10          1          -    Covered              
+            bin <start_high,busy_inactive>                 13          1          -    Covered              
+    Cross reset_x_busy                                100.00%        100          -    Covered              
+        covered/total bins:                                 4          4          -                      
+        missing/total bins:                                 0          4          -                      
+        % Hit:                                        100.00%        100          -                      
+        Auto, Default and User Defined Bins:
+            bin mid_reset                                   1          1          -    Covered              
+            bin <rst_inactive,busy_inactive>               18          1          -    Covered              
+            bin <rst_inactive,busy_active>                 27          1          -    Covered              
+            bin <rst_active,busy_inactive>                  3          1          -    Covered              
+Statement Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Statements                       5         5         0   100.00%
+
+================================Statement Details================================
+
+Statement Coverage for instance /global_ctrl_transaction_pkg --
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File global_ctrl_transaction_pkg.sv
+    1                                                package global_ctrl_transaction_pkg;
+    2                                                	class transaction;
+    3                                                		rand logic rst_n;
+    4                                                		rand logic start;
+    5                                                		rand logic output_done;
+    6                                                		logic  actual_busy;
+    7                                                		logic actual_done;
+    8                                                		logic actual_processing_en;
+    9                                                		
+    10                                               		constraint RESET {
+    11                                               			rst_n dist {1'b1 := 95 , 1'b0 := 5};
+    12                                               		}
+    13                                               		
+    14                                               		constraint START {
+    15                                               			start dist {1'b1 := 60 , 1'b0 := 40};
+    16                                               		}
+    17                                               		
+    18                                               		constraint DONE {
+    19                                               			output_done dist {1'b1 := 30 , 1'b0 := 70};
+    20                                               		}
+    21                                               		
+    22                                               		covergroup cg;
+    23                                               			reset_c: coverpoint rst_n {
+    24                                               				bins rst_active = {1'b0};
+    25                                               				bins rst_inactive = {1'b1};
+    26                                               			}
+    27                                               			
+    28                                               			start_c: coverpoint start {
+    29                                               				bins start_high = {1'b1};
+    30                                               				bins start_low = {1'b0};
+    31                                               			}
+    32                                               			
+    33                                               			done_c: coverpoint output_done {
+    34                                               				bins end_reach = {1'b1};
+    35                                               				bins continue_send = {1'b0};
+    36                                               			}
+    37                                               			
+    38                                               			busy_c: coverpoint actual_busy {
+    39                                               				bins busy_active   = {1'b1};
+    40                                               				bins busy_inactive = {1'b0};
+    41                                               			}
+    42                                               			
+    43                                               			done_out_c: coverpoint actual_done {
+    44                                               				bins done_active   = {1'b1};
+    45                                               				bins done_inactive = {1'b0};
+    46                                               			}
+    47                                               			
+    48                                               			processing_en_c: coverpoint actual_processing_en {
+    49                                               				bins pe_active   = {1'b1};
+    50                                               				bins pe_inactive = {1'b0};
+    51                                               			}
+    52                                               			
+    53                                               			// -------- Cross coverage --------
+    54                                               			//test start = 1 when busy = 1
+    55                                               			start_x_busy: cross start_c, busy_c {
+    56                                               				bins start_in_busy = binsof(start_c.start_high) && binsof(busy_c.busy_active);
+    57                                               			}
+    58                                               			
+    59                                               			// test the mid reset case rst = 0 when busy = 1
+    60                                               			reset_x_busy: cross reset_c, busy_c {
+    61                                               				bins mid_reset = binsof(reset_c.rst_active) && binsof(busy_c.busy_active);
+    62                                               			}
+    63                                               		endgroup
+    64                                               
+    65                                               		function new();
+    66              1                          1     			cg = new();
+    67                                               		endfunction
+    68                                               		
+    69                                               		function void display_gen ();
+    70              1                         50     			$display("============== generated values ===========");
+    71              1                         50     			$display("rst_n = %b" , rst_n);
+    72              1                         50     			$display("start = %b" , start);
+    73              1                         50     			$display("output_done = %b" , output_done);
+
+
+COVERGROUP COVERAGE:
+----------------------------------------------------------------------------------------------------------
+Covergroup                                             Metric       Goal       Bins    Status               
+                                                                                                         
+----------------------------------------------------------------------------------------------------------
+ TYPE /global_ctrl_transaction_pkg/transaction/cg     100.00%        100          -    Covered              
+    covered/total bins:                                    20         20          -                      
+    missing/total bins:                                     0         20          -                      
+    % Hit:                                            100.00%        100          -                      
+    Coverpoint reset_c                                100.00%        100          -    Covered              
+        covered/total bins:                                 2          2          -                      
+        missing/total bins:                                 0          2          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin rst_active                                      4          1          -    Covered              
+        bin rst_inactive                                   46          1          -    Covered              
+    Coverpoint start_c                                100.00%        100          -    Covered              
+        covered/total bins:                                 2          2          -                      
+        missing/total bins:                                 0          2          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin start_high                                     32          1          -    Covered              
+        bin start_low                                      18          1          -    Covered              
+    Coverpoint done_c                                 100.00%        100          -    Covered              
+        covered/total bins:                                 2          2          -                      
+        missing/total bins:                                 0          2          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin end_reach                                      10          1          -    Covered              
+        bin continue_send                                  40          1          -    Covered              
+    Coverpoint busy_c                                 100.00%        100          -    Covered              
+        covered/total bins:                                 2          2          -                      
+        missing/total bins:                                 0          2          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin busy_active                                    28          1          -    Covered              
+        bin busy_inactive                                  21          1          -    Covered              
+    Coverpoint done_out_c                             100.00%        100          -    Covered              
+        covered/total bins:                                 2          2          -                      
+        missing/total bins:                                 0          2          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin done_active                                     6          1          -    Covered              
+        bin done_inactive                                  43          1          -    Covered              
+    Coverpoint processing_en_c                        100.00%        100          -    Covered              
+        covered/total bins:                                 2          2          -                      
+        missing/total bins:                                 0          2          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin pe_active                                      28          1          -    Covered              
+        bin pe_inactive                                    21          1          -    Covered              
+    Cross start_x_busy                                100.00%        100          -    Covered              
+        covered/total bins:                                 4          4          -                      
+        missing/total bins:                                 0          4          -                      
+        % Hit:                                        100.00%        100          -                      
+        Auto, Default and User Defined Bins:
+            bin start_in_busy                              18          1          -    Covered              
+            bin <start_low,busy_inactive>                   8          1          -    Covered              
+            bin <start_low,busy_active>                    10          1          -    Covered              
+            bin <start_high,busy_inactive>                 13          1          -    Covered              
+    Cross reset_x_busy                                100.00%        100          -    Covered              
+        covered/total bins:                                 4          4          -                      
+        missing/total bins:                                 0          4          -                      
+        % Hit:                                        100.00%        100          -                      
+        Auto, Default and User Defined Bins:
+            bin mid_reset                                   1          1          -    Covered              
+            bin <rst_inactive,busy_inactive>               18          1          -    Covered              
+            bin <rst_inactive,busy_active>                 27          1          -    Covered              
+            bin <rst_active,busy_inactive>                  3          1          -    Covered              
+
+TOTAL COVERGROUP COVERAGE: 100.00%  COVERGROUP TYPES: 1
+
+Total Coverage By Instance (filtered view): 90.40%
+
