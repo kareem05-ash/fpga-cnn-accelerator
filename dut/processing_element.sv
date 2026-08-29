@@ -7,7 +7,7 @@ module processing_element #(
         input logic signed   [7:0] coeff,   // kernel signed coefficient [-128-127]
         // input logic                valid_in,// flags that input pixel is valid
     // Outputs
-        output logic signed [PROD_W-1 : 0] product, // product signed output
+        output logic signed [PROD_W-1 : 0] product // product signed output
         // output logic               valid_out// flags that product is valid iff valid_in asserted
 );
     // product_dsp signal is needed to infer a dsp blcok for each PE
