@@ -1,0 +1,13 @@
+Test Cases - kernel_mem
+========================
+
+TC1: Invalid Address Handling
+    Description : Send an invalid address to kernel_mem and verify the module
+                   responds correctly (no corruption, proper error/ignore behavior).
+    Status      : Covered
+
+TC2: processing_en / kernel_we Combinations
+    Description : Verify functionality when processing_en and kernel_we are
+                   each driven to 0 and 1 in all combinations, ensuring writes
+                   only occur under the correct control conditions.
+    Status      : Covered

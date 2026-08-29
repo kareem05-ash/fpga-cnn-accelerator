@@ -1,0 +1,28 @@
+Test Cases - sliding_window
+============================
+
+TC1: Normal Reset
+    Description : Apply reset during idle operation and verify all outputs
+                   return to their default/reset state correctly.
+    Status      : Covered
+
+TC2: Mid-Operation Reset
+    Description : Apply reset while the module is actively processing pixels
+                   and verify it recovers cleanly with no stale state.
+    Status      : Covered
+
+TC3: Two Full Images (width = 5), Frame to Frame
+    Description : Stream two consecutive full images of width 5 back-to-back
+                   and verify correct window generation across the frame boundary.
+    Status      : Covered
+
+TC4: Two Full Images (width = 32), Frame to Frame
+    Description : Stream two consecutive full images of width 32 back-to-back
+                   and verify correct window generation across the frame boundary.
+    Status      : Covered
+
+TC5: Mid-Stream Invalid pixel_in
+    Description : Deassert/invalidate pixel_in mid-stream and verify the module
+                   correctly stalls/ignores invalid input without corrupting the
+                   window state.
+    Status      : Covered
