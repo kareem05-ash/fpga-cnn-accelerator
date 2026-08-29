@@ -29,5 +29,11 @@ package mac_pkg;
             window_valid    = 0;
             window_last     = 0;
         endfunction : dasrt_all
+
+        function void print();
+          $display(" > rst_n: %b, valid: %b, last: %b", rst_n, window_valid, window_last);
+          $display(" > window: %p", window);
+          $display(" > kernel: %p", kernel);
+        endfunction
     endclass : Transaction
 endpackage : mac_pkg

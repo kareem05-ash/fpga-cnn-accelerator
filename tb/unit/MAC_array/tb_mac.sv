@@ -33,7 +33,7 @@ module tb_mac;
             gmout.conv_last     = tx.window_valid && tx.window_last;
             gmout.conv_result   = 0;
             for (int i = 0; i < N*N; i++) begin
-                gmout.conv_result += signed'({1'b0, tx.window[i]} * {tx.kernel[7], tx.kernel[i]});
+                gmout.conv_result += signed'({1'b0, tx.window[i]}) * tx.kernel[i];
             end
             return gmout;
         endfunction : gm
@@ -59,13 +59,13 @@ module tb_mac;
                 (dut.conv_result=== gmm.conv_result)) begin
                 passed++;
                 $display("\n %04d) [PASS] INPUTs rst_n: %b, valid: %b, last: %b", total, tx.rst_n, tx.window_valid, tx.window_last);
-                $display("%06s ----- (window[i][j], kernel[i][j]) -> [window[i][j] * kernel[i][j] -----", "");
+                $display("%06s ----- (window[i][j], kernel[i][j]) -> [window[i][j] * kernel[i][j]] -----", "");
                 for (int i = 0; i < N; i++) begin
                     for (int j = 0; j < N; j++) begin
-                        $write("%06s (%04d, %04d)", "", window[i*N + j], kernel[i*N + j]);
+                        $write("%06s (%04d, %04d)", "", signed'({1'b0, window[i*N + j]}), kernel[i*N + j]);
                     end
                     for (int j = 0; j < N; j++) begin
-                        $write("%06s [%04d]", "", signed'(window[i*N + j] * kernel[i*N + j]));
+                        $write("%06s [%06d]", "", int'(signed'({1'b0, window[i*N + j]}) * kernel[i*N + j]));
                     end
                     $display("");
                 end
@@ -75,6 +75,7 @@ module tb_mac;
                             dut.conv_last  , gmm.conv_last,
                             dut.conv_result, gmm.conv_result);
             end else begin
+                // tx.print();
                 failed_lines.push_back(total);
                 $display("\n %04d) [FAIL] INPUTs rst_n: %b, valid: %b, last: %b", total, tx.rst_n, tx.window_valid, tx.window_last);
                 $display("%06s ----- (window[i][j], kernel[i][j]) -> [window[i][j] * kernel[i][j] -----", "");
@@ -112,7 +113,7 @@ module tb_mac;
                 tr.asrt_valid();    drive_check(tr);
             // ---------- tc-03) Randomized stimulus to get valid 'conv_valid' 'conv_last' 'conv_result' ----------
                 $display("\n---------- tc-03) Randomized stimulus to get valid 'conv_valid' 'conv_last' 'conv_result' ----------");
-                repeat (100)
+                repeat (10000)
                     assert(tr.randomize())      drive_check(tr);
             // ---------- tc-01) 'window_valid' is deasserted ----------
                 $display("\n---------- tc-01) 'window_valid' is deasserted ----------");
