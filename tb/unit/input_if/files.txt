@@ -1,0 +1,3 @@
+../../../dut/input_if.sv
+input_if_pkg.sv
+tb_input_if.sv

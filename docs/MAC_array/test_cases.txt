@@ -1,0 +1,3 @@
+tc-01) 'window_valid' is deasserted -> DUT shall deassert 'conv_valid'
+tc-02) 'window_valid' is asserted   -> DUT shall assert 'conv_valid'
+tc-03) Randomized stimulus to get valid 'conv_valid' 'conv_last' 'conv_result'

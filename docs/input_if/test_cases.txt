@@ -1,0 +1,4 @@
+tc-01) Deasserted `processing_en`       -> valid & last flags should be 0 while pixel_out hold the previous value
+tc-02) Deasserted 'pixel_valid`         -> valid & last flags should be 0 while pixel_out hold the previous value
+tc-03) Many pixels with 20% dropped      -> DUT shall hold the previous pixel_out for dropped pixels
+tc-04) Complete image with Randomized Stimulus

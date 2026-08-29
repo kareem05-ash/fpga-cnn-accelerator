@@ -1,0 +1,96 @@
+# do run.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vlog 2021.1 Compiler 2021.01 Jan 19 2021
+# Start time: 13:09:27 on Aug 24,2026
+# vlog -f files.txt 
+# -- Compiling module input_if
+# -- Compiling package input_if_pkg
+# -- Compiling package tb_input_if_sv_unit
+# -- Importing package input_if_pkg
+# -- Compiling module tb_input_if
+# 
+# Top level modules:
+# 	tb_input_if
+# End time: 13:09:27 on Aug 24,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -c work.tb_input_if 
+# Start time: 13:09:27 on Aug 24,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# //  Questa Sim-64
+# //  Version 2021.1 win64 Jan 19 2021
+# //
+# //  Copyright 1991-2021 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.input_if_pkg(fast)
+# Loading work.tb_input_if_sv_unit(fast)
+# Loading work.tb_input_if(fast)
+# 
+# ---------- tc-01) Deasserted `processing_en` ----------
+#     1) [PASS] INPUTs en: 0, valid: 0, last: 0, dropped: 0, pixel: 00 | OUTPUTs valid: (dut: 0, gm: 0), last: (dut: 0, gm: 0), pixel: (dut: xx, gm: xx)
+#     2) [PASS] INPUTs en: 1, valid: 0, last: 0, dropped: 0, pixel: 00 | OUTPUTs valid: (dut: 0, gm: 0), last: (dut: 0, gm: 0), pixel: (dut: xx, gm: xx)
+# 
+# ---------- tc-02) Deasserted 'pixel_valid` ----------
+#     3) [PASS] INPUTs en: 0, valid: 0, last: 0, dropped: 0, pixel: 00 | OUTPUTs valid: (dut: 0, gm: 0), last: (dut: 0, gm: 0), pixel: (dut: xx, gm: xx)
+#     4) [PASS] INPUTs en: 0, valid: 1, last: 0, dropped: 0, pixel: 00 | OUTPUTs valid: (dut: 0, gm: 0), last: (dut: 0, gm: 0), pixel: (dut: xx, gm: xx)
+# 
+# ---------- tc-03&04) Complete image with Randomized Stimulus ----------
+#     5) [PASS] INPUTs en: 1, valid: 1, last: 0, dropped: 0, pixel: 37 | OUTPUTs valid: (dut: 1, gm: 1), last: (dut: 0, gm: 0), pixel: (dut: 37, gm: 37)
+#     6) [PASS] INPUTs en: 1, valid: 1, last: 0, dropped: 1, pixel: 46 | OUTPUTs valid: (dut: 1, gm: 1), last: (dut: 0, gm: 0), pixel: (dut: 37, gm: 37)
+#     7) [PASS] INPUTs en: 1, valid: 1, last: 0, dropped: 0, pixel: f6 | OUTPUTs valid: (dut: 1, gm: 1), last: (dut: 0, gm: 0), pixel: (dut: f6, gm: f6)
+#     8) [PASS] INPUTs en: 1, valid: 1, last: 0, dropped: 0, pixel: 76 | OUTPUTs valid: (dut: 1, gm: 1), last: (dut: 0, gm: 0), pixel: (dut: 76, gm: 76)
+#     9) [PASS] INPUTs en: 1, valid: 1, last: 0, dropped: 0, pixel: 09 | OUTPUTs valid: (dut: 1, gm: 1), last: (dut: 0, gm: 0), pixel: (dut: 09, gm: 09)
+#    10) [PASS] INPUTs en: 1, valid: 1, last: 0, dropped: 0, pixel: a5 | OUTPUTs valid: (dut: 1, gm: 1), last: (dut: 0, gm: 0), pixel: (dut: a5, gm: a5)
+#    11) [PASS] INPUTs en: 1, valid: 1, last: 0, dropped: 0, pixel: dd | OUTPUTs valid: (dut: 1, gm: 1), last: (dut: 0, gm: 0), pixel: (dut: dd, gm: dd)
+#    12) [PASS] INPUTs en: 1, valid: 1, last: 0, dropped: 0, pixel: 04 | OUTPUTs valid: (dut: 1, gm: 1), last: (dut: 0, gm: 0), pixel: (dut: 04, gm: 04)
+#    13) [PASS] INPUTs en: 1, valid: 1, last: 0, dropped: 1, pixel: 2b | OUTPUTs valid: (dut: 1, gm: 1), last: (dut: 0, gm: 0), pixel: (dut: 04, gm: 04)
+#    14) [PASS] INPUTs en: 1, valid: 1, last: 1, dropped: 0, pixel: bf | OUTPUTs valid: (dut: 1, gm: 1), last: (dut: 1, gm: 1), pixel: (dut: bf, gm: bf)
+#    15) [PASS] INPUTs en: 1, valid: 1, last: 0, dropped: 0, pixel: 89 | OUTPUTs valid: (dut: 1, gm: 1), last: (dut: 0, gm: 0), pixel: (dut: 89, gm: 89)
+#    16) [PASS] INPUTs en: 1, valid: 0, last: 0, dropped: 0, pixel: 2c | OUTPUTs valid: (dut: 0, gm: 0), last: (dut: 0, gm: 0), pixel: (dut: 89, gm: 89)
+#    17) [PASS] INPUTs en: 1, valid: 1, last: 0, dropped: 1, pixel: 7d | OUTPUTs valid: (dut: 1, gm: 1), last: (dut: 0, gm: 0), pixel: (dut: 89, gm: 89)
+#    18) [PASS] INPUTs en: 0, valid: 1, last: 0, dropped: 0, pixel: f3 | OUTPUTs valid: (dut: 0, gm: 0), last: (dut: 0, gm: 0), pixel: (dut: 89, gm: 89)
+#    19) [PASS] INPUTs en: 1, valid: 1, last: 0, dropped: 0, pixel: 8f | OUTPUTs valid: (dut: 1, gm: 1), last: (dut: 0, gm: 0), pixel: (dut: 8f, gm: 8f)
+#    20) [PASS] INPUTs en: 1, valid: 1, last: 0, dropped: 0, pixel: 4f | OUTPUTs valid: (dut: 1, gm: 1), last: (dut: 0, gm: 0), pixel: (dut: 4f, gm: 4f)
+#    21) [PASS] INPUTs en: 1, valid: 1, last: 0, dropped: 0, pixel: 8f | OUTPUTs valid: (dut: 1, gm: 1), last: (dut: 0, gm: 0), pixel: (dut: 8f, gm: 8f)
+#    22) [PASS] INPUTs en: 1, valid: 1, last: 0, dropped: 0, pixel: 77 | OUTPUTs valid: (dut: 1, gm: 1), last: (dut: 0, gm: 0), pixel: (dut: 77, gm: 77)
+#    23) [PASS] INPUTs en: 0, valid: 1, last: 0, dropped: 0, pixel: 0f | OUTPUTs valid: (dut: 0, gm: 0), last: (dut: 0, gm: 0), pixel: (dut: 77, gm: 77)
+#    24) [PASS] INPUTs en: 1, valid: 1, last: 0, dropped: 0, pixel: bf | OUTPUTs valid: (dut: 1, gm: 1), last: (dut: 0, gm: 0), pixel: (dut: bf, gm: bf)
+#    25) [PASS] INPUTs en: 1, valid: 1, last: 1, dropped: 0, pixel: 81 | OUTPUTs valid: (dut: 1, gm: 1), last: (dut: 1, gm: 1), pixel: (dut: 81, gm: 81)
+#    26) [PASS] INPUTs en: 1, valid: 1, last: 1, dropped: 0, pixel: 67 | OUTPUTs valid: (dut: 1, gm: 1), last: (dut: 1, gm: 1), pixel: (dut: 67, gm: 67)
+#    27) [PASS] INPUTs en: 1, valid: 1, last: 0, dropped: 0, pixel: 7b | OUTPUTs valid: (dut: 1, gm: 1), last: (dut: 0, gm: 0), pixel: (dut: 7b, gm: 7b)
+#    28) [PASS] INPUTs en: 1, valid: 1, last: 0, dropped: 0, pixel: 36 | OUTPUTs valid: (dut: 1, gm: 1), last: (dut: 0, gm: 0), pixel: (dut: 36, gm: 36)
+#    29) [PASS] INPUTs en: 1, valid: 0, last: 0, dropped: 0, pixel: 08 | OUTPUTs valid: (dut: 0, gm: 0), last: (dut: 0, gm: 0), pixel: (dut: 36, gm: 36)
+# 
+# ---------- tc-01) Deasserted `processing_en` ----------
+#    30) [PASS] INPUTs en: 0, valid: 0, last: 0, dropped: 0, pixel: 00 | OUTPUTs valid: (dut: 0, gm: 0), last: (dut: 0, gm: 0), pixel: (dut: 36, gm: 36)
+#    31) [PASS] INPUTs en: 1, valid: 0, last: 0, dropped: 0, pixel: 00 | OUTPUTs valid: (dut: 0, gm: 0), last: (dut: 0, gm: 0), pixel: (dut: 36, gm: 36)
+# 
+# ---------- tc-02) Deasserted 'pixel_valid` ----------
+#    32) [PASS] INPUTs en: 0, valid: 0, last: 0, dropped: 0, pixel: 00 | OUTPUTs valid: (dut: 0, gm: 0), last: (dut: 0, gm: 0), pixel: (dut: 36, gm: 36)
+#    33) [PASS] INPUTs en: 0, valid: 1, last: 0, dropped: 0, pixel: 00 | OUTPUTs valid: (dut: 0, gm: 0), last: (dut: 0, gm: 0), pixel: (dut: 36, gm: 36)
+# 
+# --------------------------------------------------
+# ----------------- End Simulation -----------------
+# --------------------------------------------------
+#  > Total  Tests   : 33
+#  > PASSed Tests   : 33
+#  > FAILed Tests   : 0
+#  > PASS rate      : 100.00 %
+#  > FAILed Lines   : '{}
+# 
+# ** Note: $stop    : tb_input_if.sv(111)
+#    Time: 670 ns  Iteration: 0  Instance: /tb_input_if
+# Break at tb_input_if.sv line 111
+# Stopped at tb_input_if.sv line 111
+# End time: 13:09:39 on Aug 24,2026, Elapsed time: 0:00:12
+# Errors: 0, Warnings: 0
