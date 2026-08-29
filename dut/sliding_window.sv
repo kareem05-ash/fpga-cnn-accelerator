@@ -37,7 +37,7 @@ module sliding_window #(
             window_last <= 1'b0;
     end*/
 	
-	assign window_last=(pixel_last && pixel_valid && rst_n)?1:0; //------------->edited
+	assign window_last = rst_n && pixel_valid && pixel_last; //------------->edited
 
     sw_addr_manager #(
         .N        (N /* default 3 */),
