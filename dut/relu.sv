@@ -21,7 +21,7 @@ module relu #(
         // if (relu_en && conv_valid && conv_result[ACC_W-1]) begin
         if (conv_valid && conv_result[ACC_W-1]) begin
             // apply ReLU
-            relu_result = '0;   // Pass zero instead of negative value
+            relu_result = 0;   // Pass zero instead of negative value
         end else begin
             relu_result = conv_result;      // Pass-through convolution result
         end
