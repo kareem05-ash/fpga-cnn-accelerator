@@ -1,0 +1,14 @@
+include/accelerator_pkg.sv
+dut/input_if.sv
+dut/global_ctrl.sv
+dut/kernel_mem.sv
+dut/sw_addr_manager.sv
+dut/sw_window_extractor.sv
+dut/sw_window_valid_gen.sv
+dut/sliding_window.sv
+dut/MAC_array.sv
+dut/relu.sv
+dut/output_formatter.sv
+dut/output_ctrl.sv
+dut/output_mem.sv
+dut/accelerator_top.sv

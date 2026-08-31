@@ -43,6 +43,7 @@ module kernel_mem #(
 ) (
     // Inputs
         input  logic                        clk,
+        input  logic                        rst_n,
         input  logic                        processing_en,
         input  logic                        kernel_we,
         input  logic [KERNEL_MEM_W-1 : 0]   kernel_waddr,
@@ -51,7 +52,12 @@ module kernel_mem #(
         output logic signed [7:0]           kernel_coeff [DEPTH]
 );
     always_ff @(posedge clk) begin
-        if (kernel_we && !processing_en && (kernel_waddr < DEPTH)) 
-            kernel_coeff [kernel_waddr] <= kernel_wdata;
+      if (!rst_n)
+        for (int i = 0; i < DEPTH; i++) begin
+          kernel_coeff[i] <= 'd0;
+        end
+      else if (kernel_we && !processing_en && (kernel_waddr < DEPTH)) 
+        kernel_coeff [kernel_waddr] <= kernel_wdata;
     end
+
 endmodule
