@@ -7,7 +7,7 @@ module output_mem # (
 )(
     input  logic clk,                                   // active-high system clock
     input  logic output_we,
-    input  logic output_re,                 
+    // input  logic output_re,                // is no longer needed 
     input  logic [ADDR_W-1 : 0]      output_waddr,
     input  logic [ADDR_W-1 : 0]      output_raddr,      // asynch
     input  logic [DATA_W-1 : 0]      output_wdata,
