@@ -5,7 +5,7 @@ module global_ctrl(
 	input wire logic rst_n, 
 	input wire logic start, 
 	input wire logic output_done,
-	output logic  busy, 
+	// output logic  busy, 
 	output logic done,
 	output logic processing_en
 	);
@@ -20,7 +20,7 @@ module global_ctrl(
 	always_comb begin 
 		processing_en=0;        // DEFAULT VALUES  
 		done=0;
-		busy=0;
+		// busy=0;
 		case(cu_state) 
 			IDLE: begin                   // STATE_1 WAIT FOR START SIGNAL 
 				if(start==1) nx_state=PROCESSING;
@@ -28,7 +28,7 @@ module global_ctrl(
 			end
 			PROCESSING: begin            // STATE_2 EN_PROCESSING AND BUSY  WAIT FOR DONE SIGNAL
 				processing_en=1;
-				busy=1;
+				// busy=1;
 				if(output_done==1) nx_state=DONE;
 				else nx_state=PROCESSING;
 			end
