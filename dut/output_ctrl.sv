@@ -5,7 +5,8 @@ module output_ctrl #(
         parameter int IMG_HEIGHT    = 32,
         parameter int OUT_WIDTH     = IMG_WIDTH  - N + 1,
         parameter int OUT_HEIGHT    = IMG_HEIGHT - N + 1,
-        parameter int ADDR_W        = $clog2(OUT_WIDTH * OUT_HEIGHT)
+        parameter int DEPTH         = OUT_WIDTH * OUT_HEIGHT,
+        parameter int ADDR_W        = $clog2(DEPTH)
 ) (
     // Inputs
         input  logic                clk,        // risign edge triggered syste clk
@@ -22,8 +23,10 @@ always_ff @(posedge clk)
 	begin
 		if(!rst_n)
 			out_waddr <= 'd0;
-		else if (fmt_valid)
-			out_waddr <= out_waddr + 1;
+		else if (fmt_valid) begin
+      if (done) out_waddr <= 'd0;
+      else      out_waddr <= out_waddr + 1;
+    end
 	end
     
 assign done = (fmt_last && fmt_valid);
