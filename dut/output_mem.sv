@@ -11,7 +11,8 @@ module output_mem # (
     input  logic [ADDR_W-1 : 0]      output_waddr,
     input  logic [ADDR_W-1 : 0]      output_raddr,      // asynch
     input  logic [DATA_W-1 : 0]      output_wdata,
-    output logic [DATA_W-1 : 0]      output_rdata
+    output logic [DATA_W-1 : 0]      output_rdata,
+    output logic                     output_valid       // raddr < waddr
 );
 
 logic [DATA_W-1:0] mem [0:(DEPTH)-1];		//every address refere to one pixel not one row
@@ -25,7 +26,8 @@ always_ff @(posedge clk)
 	end
 
 // assign output_rdata = (!output_we) ? mem[output_addr] : 'd0;
-assign output_rdata = output_re? mem[output_raddr] : '0;
+assign output_rdata = mem[output_raddr];
+assign output_valid = output_raddr < output_waddr;
 
 initial begin
   for (int i = 0; i < DEPTH; i++) begin
