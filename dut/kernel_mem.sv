@@ -54,4 +54,8 @@ module kernel_mem #(
         if (kernel_we && !processing_en && (kernel_waddr < DEPTH)) 
             kernel_coeff [kernel_waddr] <= kernel_wdata;
     end
+
+    initial begin
+      kernel_coeff = '0;
+    end
 endmodule

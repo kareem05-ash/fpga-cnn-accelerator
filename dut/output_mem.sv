@@ -24,4 +24,10 @@ always_ff @(posedge clk)
 
 assign output_rdata = (!output_we) ? mem[output_addr] : 'd0;
 
+initial begin
+  for (int i = 0; i < DEPTH; i++) begin
+    mem [i] = '0;
+  end
+end
+
 endmodule
