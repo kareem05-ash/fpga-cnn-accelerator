@@ -1,0 +1,13 @@
+CovGrpID,Name,Type
+CG001,cp_reset.active,bin
+CG001,cp_reset.inactive,bin
+CG001,cp_drop.active,bin
+CG001,cp_drop.inactive,bin
+CG001,cp_start.active,bin
+CG001,cp_start.inactive,bin
+CG001,cp_last.active,bin
+CG001,cp_last.inactive,bin
+CG001,cp_pixel.allOnes,bin
+CG001,cp_pixel.allZeross,bin
+CG001,cp_kernel.negative,bin
+CG001,cp_kernel.positive,bin
