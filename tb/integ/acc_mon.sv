@@ -35,23 +35,23 @@ package acc_mon_pkg;
 					rsp = acc_txn::type_id::create("rsp");
 					
 					@(m_cfg.read_in_kernel);
-					@(negedge acc_vif)
+					@(posedge acc_vif.clk)
 					rsp.output_raddr1 = acc_vif.output_raddr;
 					rsp.output_valid = acc_vif.output_valid;
 					rsp.output_rdata = acc_vif.output_rdata;
 					
 					@(m_cfg.busy_state)
-					@(negedge acc_vif.clk);
+					@(posedge acc_vif.clk);
 					rsp.busy = acc_vif.busy;
 					
 					@(m_cfg.read_in_processing);
-					@(negedge acc_vif)
-					rsp.output_raddr2 = acc_vif.output_raddr;
+					@(posedge acc_vif.clk)
+					rsp.output_raddr2 = acc_vif.output_raddr; 
 					rsp.output_valid = acc_vif.output_valid;
 					rsp.output_rdata = acc_vif.output_rdata;
 					
 					@(m_cfg.processing_done);
-					@(negedge acc_vif)
+					@(posedge acc_vif.clk)
 					rsp.done = acc_vif.done;
 					
 					ap.write(rsp);

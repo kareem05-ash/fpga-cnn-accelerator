@@ -7,10 +7,10 @@ package acc_agt_pkg;
 	import acc_mon_pkg::*;
 	
 	class acc_agt #(parameter int unsigned N = 5,
-                parameter int unsigned IMG_WIDTH = 32,
-                parameter int unsigned IMG_HEIGHT = 32) extends uvm_agent;
+                	parameter int unsigned IMG_WIDTH = 32,
+               		parameter int unsigned IMG_HEIGHT = 32) extends uvm_agent;
 	
-		acc_drv drv;
+		acc_drv#(N, IMG_WIDTH, IMG_HEIGHT) drv;
 		acc_sqr sqr;
 		acc_mon mon;
 	
