@@ -66,6 +66,7 @@ package acc_drv_pkg;
 					vif.pixel_valid  = 1;
 					vif.pixel_in     = txn.pixel_in[i];
 					if( i == 0 ) vif.output_raddr = txn.output_raddr2; //------------------->"raddr sent monitor output_rdata and output_valid"
+					if( i == IMG_WIDTH*IMG_HEIGHT-1) vif.pixel_last=txn.pixel_last;
 					@(negedge vif.clk);
 				end
 					vif.pixel_valid = 0;

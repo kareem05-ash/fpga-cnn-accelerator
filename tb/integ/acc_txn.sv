@@ -75,6 +75,10 @@ package acc_txn_pkg;
 			foreach(pixel_dropped[i])
 				pixel_dropped[i] dist {0 := 90, 1 := 10};
 		}
+		
+		constraint pixel_last_dist {
+			pixel_last dist {1 := 90, 0 := 10};
+		}
 
 		`uvm_object_utils_begin (acc_txn)
 			`uvm_field_int		(rst_n,    			UVM_DEFAULT)
