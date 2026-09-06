@@ -47,15 +47,20 @@ package acc_drv_pkg;
 					vif.kernel_we    = 1;
 					vif.kernel_waddr = i;
 					vif.kernel_wdata = txn.kernel_wdata[i];
-					if( i == N ) vif.output_raddr = txn.output_raddr1;  //------------->"invalid read address monitor output_valid"
+					if( i == N ) 
+						begin
+							vif.output_raddr = txn.output_raddr1;  //------------->"invalid read address monitor output_valid"
+							-> m_cfg.read_in_kernel;
+						end
 					@(negedge vif.clk);
 				end
 				vif.kernel_we = 0;
 				
 				vif.start=txn.start; //---------------------------->START
 				
-				
 				@(negedge vif.clk);  //------------------------------> PROCESSING_EN STATE "monitor busy signal here"
+				-> m_cfg.busy_state;
+
 				vif.start=0;
 				for (int i = 0; i < IMG_WIDTH*IMG_HEIGHT; i++) begin
 					repeat (txn.idle_cycles[i]) begin
@@ -65,11 +70,19 @@ package acc_drv_pkg;
 					vif.pixel_dropped=txn.pixel_dropped[i];
 					vif.pixel_valid  = 1;
 					vif.pixel_in     = txn.pixel_in[i];
-					if( i == 0 ) vif.output_raddr = txn.output_raddr2; //------------------->"raddr sent monitor output_rdata and output_valid"
-					if( i == IMG_WIDTH*IMG_HEIGHT-1) vif.pixel_last=txn.pixel_last;
+					if( i == 0 ) 
+						begin
+							vif.output_raddr = txn.output_raddr2; //------------------->"raddr sent monitor output_rdata and output_valid"
+							-> m_cfg.read_in_processing;
+						end
+					if( i == IMG_WIDTH*IMG_HEIGHT-1) 
+						begin
+							vif.pixel_last=txn.pixel_last;
+						end
 					@(negedge vif.clk);
 				end
-					vif.pixel_valid = 0;
+				-> m_cfg.processing_done;
+				vif.pixel_valid = 0;
 					
 				//--------------------------------------> DONE STATE "monitor done signal here"
 				
