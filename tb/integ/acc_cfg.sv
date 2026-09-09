@@ -15,6 +15,7 @@ package acc_cfg_pkg;
 		// event processing_done;
 
     event stimulus_sent_e;
+    event read_seq_start_e;
 		
 		function new (string name = "acc_cfg");
 			super.new(name);
