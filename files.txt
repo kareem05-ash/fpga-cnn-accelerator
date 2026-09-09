@@ -12,3 +12,13 @@ dut/output_formatter.sv
 dut/output_ctrl.sv
 dut/output_mem.sv
 dut/accelerator_top.sv
+
+tb/integ/acc_if.sv
+tb/integ/acc_txn.sv
+tb/integ/acc_cfg.sv
+
+tb/integ/acc_kernel_seq_pkg.sv
+tb/integ/acc_reset_seq_pkg.sv
+tb/integ/acc_start_seq_pkg.sv
+tb/integ/acc_stream_seq_pkg.sv
+tb/integ/acc_seq.sv

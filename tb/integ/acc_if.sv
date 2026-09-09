@@ -1,6 +1,6 @@
 interface acc_if;
 	// parameters
-	parameter int unsigned  N               = 5;    // kernel dimension
+	  parameter int unsigned  N               = 5;    // kernel dimension
     parameter int unsigned  PROD_W          = 17;   // product bit width (unsigned 8-bit * signed 8-bit = signed 17-bit)
     parameter int unsigned  IMG_WIDTH       = 32;   // input  image width
     parameter int unsigned  IMG_HEIGHT      = 32;   // input  image height
