@@ -17,7 +17,7 @@ module output_mem # (
 
 logic [DATA_W-1:0] mem [0:(DEPTH)-1];		//every address refere to one pixel not one row
 
-always_ff @(posedge clk)
+always @(posedge clk)
 	begin
 		if (output_we)
 			begin
