@@ -23,7 +23,7 @@ package acc_kernel_seq_pkg;
             kernel_we       == 1;
             kernel_waddr    == idx;
           })
-            `uvm_fatal("KERNEL_SEQ", "Randomization failed"),
+            `uvm_fatal("KERNEL_SEQ", "Randomization failed")
 
           `uvm_info("KERNEL_SEQ", txn.sprint(), UVM_HIGH)
             
