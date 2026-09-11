@@ -1,8 +1,6 @@
 module output_mem # (
-    parameter int OUT_WIDTH = 32,
-    parameter int OUT_HEIGHT = 32,
-    parameter int DATA_W = 16,
-    parameter int DEPTH = OUT_WIDTH * OUT_HEIGHT,
+    parameter int DATA_W,
+    parameter int DEPTH,
     parameter int ADDR_W = $clog2(DEPTH)
 )(
     input  logic clk,                                   // active-high system clock

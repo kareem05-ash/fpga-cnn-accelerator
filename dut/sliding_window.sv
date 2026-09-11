@@ -27,17 +27,19 @@ module sliding_window #(
             line_buf [wr_addr] <= pixel_in;
     end
 
+    // assign line_buf [wr_addr] = pixel_valid? pixel_in : '0;
+
     // Window last signal logic
-    /*always_ff @(posedge clk) begin
+    always_ff @(posedge clk) begin
         if (!rst_n)
             window_last <= 1'b0;
         else if (pixel_last && pixel_valid)
             window_last <= 1'b1;
         else
             window_last <= 1'b0;
-    end*/
+    end
 	
-	assign window_last = rst_n && pixel_valid && pixel_last; //------------->edited
+	// assign window_last = rst_n && pixel_valid && pixel_last; //------------->edited
 
     sw_addr_manager #(
         .N        (N /* default 3 */),
@@ -57,6 +59,7 @@ module sliding_window #(
         .N        (N /* default 3 */),
         .IMG_WIDTH(IMG_WIDTH /* default 32 */)
     ) u_window_valid_gen (
+        .clk(clk),
         .pixel_valid (pixel_valid),
         .col_idx     (col_idx),
         .stored_rows (stored_rows),
@@ -67,6 +70,7 @@ module sliding_window #(
         .N        (N /* default 3 */),
         .IMG_WIDTH(IMG_WIDTH /* default 32 */)
     ) u_window_extractor (
+        .clk(clk),
         .line_buf  (line_buf),
         .pixel_in  (pixel_in),
         .col_idx   (col_idx),

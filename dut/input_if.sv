@@ -1,7 +1,7 @@
 module input_if(
   // Inputs
     input  logic clk,
-  input  logic rst_n,
+    input  logic rst_n,
     input  logic processing_en,
     input  logic pixel_valid,
     input  logic pixel_last,
@@ -16,14 +16,20 @@ module input_if(
     //  1. pixel_valid is asserted && pixel_dropped is asserted
     //  2. pixel_valid is asserted && pixel_dropped is NOT asserted
     // 1. & 2. simplified to pixel_valid only 
-    assign pixel_out_valid  = pixel_valid && processing_en;
+    // assign pixel_out_valid  = pixel_valid && processing_en;
     // assign pixel_out_last   = pixel_valid && processing_en && pixel_last;
+    // assign pixel_out        = (pixel_valid && processing_en && !pixel_dropped)? pixel_in : '0;
 
     always_ff @(posedge clk) begin
       if (!rst_n)
         pixel_out <= '0;
       else if (processing_en && pixel_valid && !pixel_dropped)
         pixel_out <=  pixel_in;
+    end
+
+    always_ff @(posedge clk) begin
+      if (!rst_n)   pixel_out_valid <= 'd0;
+      else          pixel_out_valid <= pixel_valid && processing_en;
     end
 
     always_ff @(posedge clk) begin

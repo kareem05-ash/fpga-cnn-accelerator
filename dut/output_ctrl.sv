@@ -24,8 +24,9 @@ always_ff @(posedge clk)
 		if(!rst_n)
 			out_waddr <= 'd0;
 		else if (fmt_valid) begin
-      if (done) out_waddr <= 'd0;
-      else      out_waddr <= out_waddr + 1;
+      // if (done) out_waddr <= 'd0;
+      // else      out_waddr <= out_waddr + 1;
+      out_waddr <= out_waddr + 1;
     end
 	end
     

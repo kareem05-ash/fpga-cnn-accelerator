@@ -1,15 +1,15 @@
 module accelerator_top #(
   // Parameters
-    parameter int unsigned  N               = 5,    // kernel dimension
-    parameter int unsigned  PROD_W          = 17,   // product bit width (unsigned 8-bit * signed 8-bit = signed 17-bit)
-    parameter int unsigned  IMG_WIDTH       = 32,   // input  image width
-    parameter int unsigned  IMG_HEIGHT      = 32,   // input  image height
+    parameter int unsigned  N,    // kernel dimension
+    parameter int unsigned  PROD_W,   // product bit width (unsigned 8-bit * signed 8-bit = signed 17-bit)
+    parameter int unsigned  IMG_WIDTH,   // input  image width
+    parameter int unsigned  IMG_HEIGHT,   // input  image height
     parameter int unsigned  OUT_WIDTH       = IMG_WIDTH  - N + 1,   // output image width
     parameter int unsigned  OUT_HEIGHT      = IMG_HEIGHT - N + 1,   // output image heigth
     parameter int unsigned  IN_DEPTH        = IMG_WIDTH * IMG_HEIGHT,
     parameter int unsigned  OUT_DEPTH       = OUT_WIDTH * OUT_HEIGHT,
-    parameter int unsigned  ACC_W           = 24,   // accumulated result bit width
-    parameter int unsigned  OUT_W           = 16,   // convolution result bit width
+    parameter int unsigned  ACC_W,   // accumulated result bit width
+    parameter int unsigned  OUT_W,   // convolution result bit width
     parameter int unsigned  OUT_MEM_ADDR_W  = $clog2(OUT_DEPTH),
     parameter int unsigned  K_MEM_ADDR_W    = $clog2(N*N)
 ) (
@@ -169,9 +169,8 @@ module accelerator_top #(
   );
 
   output_mem #(
-    .OUT_WIDTH(OUT_WIDTH),
-    .OUT_HEIGHT(OUT_HEIGHT),
-    .DATA_W(OUT_W)
+    .DATA_W(OUT_W),
+    .DEPTH(OUT_DEPTH)
   ) output_MEM(
     .clk(clk),
     .output_we(out_we),
