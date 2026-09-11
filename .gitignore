@@ -3,3 +3,6 @@
 *.wlf
 **vsim*
 **/transcript
+*output*.txt
+kernel.txt
+input.txt

@@ -15,10 +15,27 @@ dut/accelerator_top.sv
 
 tb/integ/acc_if.sv
 tb/integ/acc_txn.sv
+tb/integ/param_pkg.sv
 tb/integ/acc_cfg.sv
 
-tb/integ/acc_kernel_seq_pkg.sv
 tb/integ/acc_reset_seq_pkg.sv
+tb/integ/acc_kernel_seq_pkg.sv
 tb/integ/acc_start_seq_pkg.sv
 tb/integ/acc_stream_seq_pkg.sv
+tb/integ/acc_read_seq_pkg.sv
 tb/integ/acc_seq.sv
+
+tb/integ/acc_sqr.sv
+tb/integ/acc_drv.sv
+tb/integ/acc_mon.sv
+tb/integ/acc_agt.sv
+
+tb/integ/acc_cov.sv
+tb/integ/acc_scb.sv
+tb/integ/acc_env.sv
+
+tb/integ/acc_tst.sv
+
+tb/integ/acc_pkg.sv
+
+tb/integ/acc_tb.sv
