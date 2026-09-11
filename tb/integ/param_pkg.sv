@@ -1,5 +1,5 @@
 package param_pkg;
-  parameter int unsigned N          = 5;
+  parameter int unsigned N          = 3;
   parameter int unsigned IMG_WIDTH  = 32;
   parameter int unsigned IMG_HEIGHT = 32;
   parameter int unsigned OUT_WIDTH  = IMG_WIDTH - N + 1;
