@@ -3,25 +3,19 @@
 
 module acc_tb;
 
-    import uvm_pkg::*;
     `include "uvm_macros.svh"
-
-    localparam int unsigned N          = 5;
-    localparam int unsigned IMG_WIDTH  = 32;
-    localparam int unsigned IMG_HEIGHT = 32;
-    localparam int unsigned OUT_W      = 16;
+    import uvm_pkg::*;
+    import acc_pkg::*;
+    import acc_cfg_pkg::*;
+    import param_pkg::*;
 
     logic clk;
-    logic rst_n;
+    acc_cfg m_cfg;
 
-    initial clk = 1'b0;
-    always #5 clk = ~clk;
-
-    initial begin
-        rst_n = 1'b0;
-        repeat (4) @(posedge clk);
-        rst_n = 1'b1;
-    end
+    // localparam int unsigned N          = 3;
+    // localparam int unsigned IMG_WIDTH  = 5;
+    // localparam int unsigned IMG_HEIGHT = 5;
+    // localparam int unsigned OUT_W      = 16;
 
     acc_if #(
         .N         (N),
@@ -29,14 +23,15 @@ module acc_tb;
         .IMG_HEIGHT(IMG_HEIGHT),
         .OUT_W     (OUT_W)
     ) vif (
-        .clk  (clk),
-        .rst_n(rst_n)
+      .clk(clk)
     );
 
     accelerator_top #(
         .N         (N),
+        .PROD_W    (PROD_W),
         .IMG_WIDTH (IMG_WIDTH),
         .IMG_HEIGHT(IMG_HEIGHT),
+        .ACC_W     (ACC_W),
         .OUT_W     (OUT_W)
     ) dut (
         .clk          (vif.clk),
@@ -56,9 +51,21 @@ module acc_tb;
         .output_rdata (vif.output_rdata)
     );
 
+    initial clk = 1'b0;
+    always #5ns clk = ~clk;
+
     initial begin
-        uvm_config_db#(virtual acc_if)::set(null, "*", "vif", vif);
-        run_test();
+      m_cfg = acc_cfg::type_id::create("cfg", null);
+
+      // `IS_ACTIVE is a macro should be defined in the do file
+      m_cfg.is_active = `IS_ACTIVE? UVM_ACTIVE : UVM_PASSIVE;
+      m_cfg.n         = N;
+      m_cfg.img_w     = IMG_WIDTH;
+      m_cfg.img_h     = IMG_HEIGHT;
+      m_cfg.acc_vif   = vif;
+
+      uvm_config_db #(acc_cfg)::set(null, "*", "cfg", m_cfg);
+      run_test("acc_tst");
     end
 
 endmodule : acc_tb

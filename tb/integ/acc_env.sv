@@ -1,36 +1,38 @@
+package acc_env_pkg;
+  `include "uvm_macros.svh"
+  import uvm_pkg::*;
+  import acc_agt_pkg::*;
+  import acc_cov_pkg::*;
+  import acc_scb_pkg::*;
 
-class acc_env extends uvm_env;
+  class acc_env #(OUT_DEPTH) extends uvm_env;
+    `uvm_component_param_utils(acc_env #(OUT_DEPTH))
 
-    `uvm_component_utils(acc_env)
+    acc_agt #(OUT_DEPTH)  agt;
+    acc_scb #(OUT_DEPTH)  scb;
+    acc_cov               cov;
 
-    acc_config     cfg;
-    acc_agent      agent;
-    acc_coverage   coverage;
-    acc_scoreboard scoreboard;
+    function new(string name="acc_env", uvm_component parent);
+      super.new(name, parent);
+      `uvm_info("NEW", get_full_name(), UVM_FULL)
+    endfunction //new()
 
-    function new(string name = "acc_env", uvm_component parent = null);
-        super.new(name, parent);
+    virtual function void build_phase(uvm_phase phase);
+      super.build_phase(phase);
+      `uvm_info("BUILD", get_full_name(), UVM_FULL)
+
+      agt = acc_agt #(OUT_DEPTH)::type_id::create("agt", this);
+      scb = acc_scb #(OUT_DEPTH)::type_id::create("scb", this);
+      cov = acc_cov             ::type_id::create("cov", this);
     endfunction
 
-    function void build_phase(uvm_phase phase);
-        super.build_phase(phase);
-        `uvm_info("ENV", "acc_env build_phase", UVM_LOW)
-        `uvm_info("ENV", "acc_env build_phase", UVM_MEDIUM)
-        `uvm_info("ENV", "acc_env build_phase", UVM_HIGH)
-        `uvm_info("ENV", "acc_env build_phase", UVM_FULL)
+    virtual function void connect_phase(uvm_phase phase);
+      super.connect_phase(phase);
+      `uvm_info("CONNECT", get_full_name(), UVM_FULL)
 
-        if (!uvm_config_db#(acc_config)::get(this, "", "cfg", cfg))
-            `uvm_fatal("ENV", "acc_config not found in config_db")
-
-        agent      = acc_agent::type_id::create("agent", this);
-        coverage   = acc_coverage::type_id::create("coverage", this);
-        scoreboard = acc_scoreboard::type_id::create("scoreboard", this);
+      agt.push_port.connect(cov.push_imp);
+      agt.push_port.connect(scb.push_imp);
     endfunction
+  endclass //acc_env extends uvm_env
 
-    function void connect_phase(uvm_phase phase);
-        super.connect_phase(phase);
-        agent.monitor.ap.connect(scoreboard.sb_imp);
-        agent.monitor.ap.connect(coverage.cov_imp);
-    endfunction
-
-endclass : acc_env
+endpackage

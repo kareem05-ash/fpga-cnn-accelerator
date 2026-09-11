@@ -78,7 +78,11 @@ package acc_txn_pkg;
       }
 
       constraint pixel_dropped_c {
-        pixel_dropped dist {0 := 1, 1 := 9};
+        pixel_dropped dist {0 := 9, 1 := 1};
+      }
+
+      constraint kernel_c {
+        kernel_wdata dist {[-128:-1] := 2, [0 : 127] := 8};
       }
 
 		`uvm_object_utils_begin (acc_txn)

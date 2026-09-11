@@ -10,11 +10,12 @@ package acc_sqr_pkg;
 
 		function new(string name = "acc_sqr", uvm_component parent);
 			super.new(name , parent);
+      `uvm_info("NEW", get_full_name(), UVM_FULL)
 		endfunction
 
 		function void build_phase(uvm_phase phase);
 			super.build_phase(phase);
-			`uvm_info(get_type_name(), "accelerator sequencer build phase", UVM_LOW)
+			`uvm_info("BUILD", get_full_name(), UVM_LOW)
 		endfunction
 
 	endclass

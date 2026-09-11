@@ -1,22 +1,24 @@
-interface acc_if;
+interface acc_if #(
 	// parameters
-	  parameter int unsigned  N               = 5;    // kernel dimension
-    parameter int unsigned  PROD_W          = 17;   // product bit width (unsigned 8-bit * signed 8-bit = signed 17-bit)
-    parameter int unsigned  IMG_WIDTH       = 32;   // input  image width
-    parameter int unsigned  IMG_HEIGHT      = 32;   // input  image height
-    parameter int unsigned  OUT_WIDTH       = IMG_WIDTH  - N + 1;   // output image width
-    parameter int unsigned  OUT_HEIGHT      = IMG_HEIGHT - N + 1;   // output image heigth
-    parameter int unsigned  IN_DEPTH        = IMG_WIDTH * IMG_HEIGHT;
-    parameter int unsigned  OUT_DEPTH       = OUT_WIDTH * OUT_HEIGHT;
-    parameter int unsigned  ACC_W           = 24;   // accumulated result bit width
-    parameter int unsigned  OUT_W           = 16;   // convolution result bit width
-    parameter int unsigned  OUT_MEM_ADDR_W  = $clog2(OUT_DEPTH);
-    parameter int unsigned  K_MEM_ADDR_W    = $clog2(N*N);
-	
+	  parameter int unsigned  N,    // kernel dimension
+    // parameter int unsigned  PROD_W          = 17,   // product bit width (unsigned 8-bit * signed 8-bit = signed 17-bit)
+    parameter int unsigned  IMG_WIDTH,   // input  image width
+    parameter int unsigned  IMG_HEIGHT,   // input  image height
+    parameter int unsigned  OUT_WIDTH       = IMG_WIDTH  - N + 1,   // output image width
+    parameter int unsigned  OUT_HEIGHT      = IMG_HEIGHT - N + 1,   // output image heigth
+    // parameter int unsigned  IN_DEPTH        = IMG_WIDTH * IMG_HEIGHT,
+    parameter int unsigned  OUT_DEPTH       = OUT_WIDTH * OUT_HEIGHT,
+    // parameter int unsigned  ACC_W           = 24,   // accumulated result bit width
+    parameter int unsigned  OUT_W,   // convolution result bit width
+    parameter int unsigned  OUT_MEM_ADDR_W  = $clog2(OUT_DEPTH),
+    parameter int unsigned  K_MEM_ADDR_W    = $clog2(N*N)
+) (
+  // Inputs
+    input logic clk   // system clk | +ve edge triggered
+);
 
 	// Inputs
-    // clk & reset & SW Ctrl
-    logic                        clk;        // system clk | +ve edge triggered
+    // reset & SW Ctrl      
     logic                        rst_n;      // synch active-low reset
     logic                        start;      // starting processing command
     

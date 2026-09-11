@@ -3,7 +3,7 @@ package acc_kernel_seq_pkg;
   import uvm_pkg::*;
   import acc_txn_pkg::*;
 
-  class acc_kernel_seq #(N=3) extends uvm_sequence #(acc_txn);
+  class acc_kernel_seq #(N) extends uvm_sequence #(acc_txn);
     `uvm_object_param_utils(acc_kernel_seq #(N))
 
     function new(string name="acc_kernel_seq");

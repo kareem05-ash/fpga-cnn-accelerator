@@ -11,12 +11,12 @@ package acc_start_seq_pkg;
     endfunction //new()
 
     virtual task body();
-      for (int i = 0; i < 2; i++) begin
+      for (int i = 1; i < 2; i++) begin
         acc_txn txn = acc_txn::type_id::create("reset_seq");
 
         start_item(txn);
 
-          if (!txn.randomize() with {start == i; kernel_we == 0;})
+          if (!txn.randomize() with {start == i; kernel_we == 0; pixel_valid == 0;})
             `uvm_fatal("START_SEQ", "Randomization Failed")
 
           `uvm_info("START_SEQ", txn.sprint(), UVM_HIGH)

@@ -1,63 +1,84 @@
 package acc_mon_pkg;
+  `include "uvm_macros.svh"
+  import uvm_pkg::*;
+  import acc_txn_pkg::*;
+  import acc_cfg_pkg::*;
 
-	import uvm_pkg::*;
-	`include "uvm_macros.svh"
-	import acc_cfg_pkg::*;
-	import acc_txn_pkg::*;
-	
-	class acc_mon extends uvm_monitor;
-	
-		virtual acc_if acc_vif;
-		acc_cfg m_cfg;
-		uvm_analysis_port #(acc_txn) ap;
-	
-		`uvm_component_utils(acc_mon)
-	
-		function new(string name = "acc_mon", uvm_component parent);
-			super.new(name , parent);
-		endfunction
-	
-		function void build_phase(uvm_phase phase);
-			super.build_phase(phase);
-			ap = new ("ap" , this);
-	
-			if(!uvm_config_db #(virtual acc_if)::get (this , "" , "vif" , acc_vif))
-				`uvm_fatal(get_type_name() , "failed to get the interface in the monitor")
-	
-			`uvm_info(get_type_name(), "accelerator monitor build phase", UVM_LOW)
-		endfunction
-	
-		task run_phase(uvm_phase phase);
-			acc_txn rsp;
-			`uvm_info(get_type_name() , "enter the run phase" , UVM_LOW)
-			forever 
-				begin
-					rsp = acc_txn::type_id::create("rsp");
-					
-					@(m_cfg.read_in_kernel);
-					@(posedge acc_vif.clk)
-					rsp.output_raddr1 = acc_vif.output_raddr;
-					rsp.output_valid = acc_vif.output_valid;
-					rsp.output_rdata = acc_vif.output_rdata;
-					
-					@(m_cfg.busy_state)
-					@(posedge acc_vif.clk);
-					rsp.busy = acc_vif.busy;
-					
-					@(m_cfg.read_in_processing);
-					@(posedge acc_vif.clk)
-					rsp.output_raddr2 = acc_vif.output_raddr; 
-					rsp.output_valid = acc_vif.output_valid;
-					rsp.output_rdata = acc_vif.output_rdata;
-					
-					@(m_cfg.processing_done);
-					@(posedge acc_vif.clk)
-					rsp.done = acc_vif.done;
-					
-					ap.write(rsp);
-					`uvm_info(get_type_name() , $sformatf("IN MON : busy = %b , output_valid = %b , output_rdata = %d , done = %d" , rsp.busy , rsp.output_valid , rsp.output_rdata , rsp.done) , UVM_LOW)
-				end
-		endtask
-	endclass
+  class acc_mon #(OUT_DEPTH) extends uvm_monitor;
+    `uvm_component_param_utils(acc_mon #(OUT_DEPTH))
 
+    acc_cfg m_cfg;
+    uvm_analysis_port #(acc_txn) push_port;
+
+    function new(string name="acc_mon", uvm_component parent);
+      super.new(name, parent);
+      push_port = new("mon_push_port", this);
+      `uvm_info("NEW", get_full_name(), UVM_FULL)
+    endfunction //new()
+
+    virtual function void build_phase(uvm_phase phase);
+      super.build_phase(phase);
+      `uvm_info("BUILD", get_full_name(), UVM_FULL)
+
+      if (!uvm_config_db #(acc_cfg)::get(this, "", "cfg", m_cfg))
+        `uvm_fatal(get_type_name(), "Failed to get the common cfg")
+    endfunction
+
+    virtual function void capture();
+      acc_txn txn = acc_txn::type_id::create("mon_txn", this);
+
+      txn.busy          = m_cfg.acc_vif.busy;
+      txn.done          = m_cfg.acc_vif.done;
+      txn.output_valid  = m_cfg.acc_vif.output_valid;
+      txn.output_rdata  = m_cfg.acc_vif.output_rdata;
+
+      push_port.write(txn);
+    endfunction
+
+    virtual task save_output();
+      int file_h;
+      file_h = $fopen("output.txt", "w");
+      if (file_h == 0)
+        `uvm_fatal(get_type_name(), "Failed to save outputs into output.txt")
+
+      repeat (OUT_DEPTH) begin
+        @(negedge m_cfg.acc_vif.clk);
+          `uvm_info(
+            get_full_name(),
+            $sformatf("Before saving %0d output in output.txt", m_cfg.acc_vif.output_rdata),
+            UVM_DEBUG)
+          $fwrite(file_h, "%0d\n", m_cfg.acc_vif.output_rdata);
+          `uvm_info(
+            get_full_name(),
+            $sformatf("After saving %0d output in output.txt", m_cfg.acc_vif.output_rdata),
+            UVM_DEBUG)
+          if (!m_cfg.acc_vif.output_valid)
+            `uvm_warning(get_full_name(), "Output isn't valid")
+      end
+
+      $fclose(file_h);
+    endtask
+
+    virtual task run_phase(uvm_phase phase);
+      fork
+        forever begin
+          @(m_cfg.stimulus_sent_e);
+            @(negedge m_cfg.acc_vif.clk);
+              `uvm_info(get_full_name(), "Before capturing the outputs", UVM_DEBUG)
+              capture();
+              `uvm_info(get_full_name(), "After capturing the outputs", UVM_DEBUG)
+        end
+
+        begin
+          @(m_cfg.read_seq_start_e);
+            @(negedge m_cfg.acc_vif.clk);
+              `uvm_info(get_full_name(), "Before getting into save_output()", UVM_DEBUG)
+              save_output();
+              `uvm_info(get_full_name(), "After  getting into save_output()", UVM_DEBUG)
+              -> m_cfg.read_seq_done_e;
+              `uvm_info(get_type_name(), "Outputs saved into output.txt", UVM_FULL)
+        end
+      join
+    endtask
+  endclass //acc_mon extends uvm_monitor
 endpackage

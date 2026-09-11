@@ -15,15 +15,28 @@ package acc_read_seq_pkg;
       acc_txn txn;
       acc_cfg m_cfg;
 
-      if (!uvm_config_db #(acc_cfg)::get(this, "", "cfg", m_cfg))
+      if (!uvm_config_db #(acc_cfg)::get(get_sequencer(), "", "cfg", m_cfg))
         `uvm_fatal("READ_SEQ", "Failed to get the common cfg")
+
+      // repeat (5) begin
+      //   `uvm_info(get_full_name(), "IDLE cycles to catch dut latency", UVM_FULL)
+      //   txn = acc_txn::type_id::create("output_txn");
+      //   start_item(txn);
+      //     if (!txn.randomize() with {
+      //       rst_n           == 1;
+      //       start           == 0;
+      //       pixel_valid     == 0;
+      //     })
+      //   finish_item(txn);
+      // end
 
       -> m_cfg.read_seq_start_e;
 
-      for (int idx=0; idx < OUT_DEPTH; idx++) begin
+      for (int idx=0; idx <= OUT_DEPTH; idx++) begin
         txn = acc_txn::type_id::create("output_txn");
 
         start_item(txn);
+        
           if (!txn.randomize() with {
             rst_n           == 1;
             start           == 0;
@@ -32,7 +45,10 @@ package acc_read_seq_pkg;
           })
             `uvm_fatal("READ_SEQ", "Randomization failed")
 
-          `uvm_info("READ_SEQ", txn.sprint(), UVM_HIGH)
+          `uvm_info("READ_SEQ", {
+            $sformatf("Seq %0d of %0d\n", idx+1, OUT_DEPTH),
+            txn.sprint()
+          }, UVM_HIGH)
             
         finish_item(txn);
       end

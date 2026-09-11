@@ -19,7 +19,9 @@ package acc_reset_seq_pkg;
 
         `uvm_info("RESET_SEQ", txn.sprint(), UVM_HIGH)
         
+        `uvm_info("RESET_SEQ", "Before finish_item", UVM_DEBUG)
       finish_item(txn);
+      `uvm_info("RESET_SEQ", "After finish_item", UVM_DEBUG)
     endtask
   endclass //acc_reset_seq extends uvm_sequence #(acc_txn)
 endpackage

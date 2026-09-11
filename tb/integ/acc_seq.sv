@@ -23,24 +23,29 @@ package acc_seq_pkg;
       acc_read_seq   #(OUT_DEPTH) read_seq;
 
       reset_seq   = acc_reset_seq::type_id::create("reset_seq");
-      reset_seq.start(m_sequencer);
-      `uvm_info("MAIN_SEQ", {reset_seq.get_type_name(), ": starts"}, UVM_MEDIUM)
+      `uvm_info("MAIN_SEQ", {reset_seq.get_full_name(), ": starts"}, UVM_MEDIUM)
+      reset_seq.start(m_sequencer, this);
+      `uvm_info("MAIN_SEQ", {reset_seq.get_full_name(), ": completed"}, UVM_MEDIUM)
 
       kernel_seq  = acc_kernel_seq #(N)::type_id::create("kernel_seq");
-      kernel_seq.start(m_sequencer);
-      `uvm_info("MAIN_SEQ", {kernel_seq.get_type_name(), ": starts"}, UVM_MEDIUM)
+      `uvm_info("MAIN_SEQ", {kernel_seq.get_full_name(), ": starts"}, UVM_MEDIUM)
+      kernel_seq.start(m_sequencer, this);
+      `uvm_info("MAIN_SEQ", {kernel_seq.get_full_name(), ": completed"}, UVM_MEDIUM)
 
       start_seq   = acc_start_seq::type_id::create("start_seq");
-      start_seq.start(m_sequencer);
-      `uvm_info("MAIN_SEQ", {start_seq.get_type_name(), ": starts"}, UVM_MEDIUM)
+      `uvm_info("MAIN_SEQ", {start_seq.get_full_name(), ": starts"}, UVM_MEDIUM)
+      start_seq.start(m_sequencer, this);
+      `uvm_info("MAIN_SEQ", {start_seq.get_full_name(), ": completed"}, UVM_MEDIUM)
 
       stream_seq  = acc_stream_seq #(IN_DEPTH)::type_id::create("stream_seq");
-      stream_seq.start(m_sequencer);
-      `uvm_info("MAIN_SEQ", {stream_seq.get_type_name(), ": starts"}, UVM_MEDIUM)
+      `uvm_info("MAIN_SEQ", {stream_seq.get_full_name(), ": starts"}, UVM_MEDIUM)
+      stream_seq.start(m_sequencer, this);
+      `uvm_info("MAIN_SEQ", {stream_seq.get_full_name(), ": completed"}, UVM_MEDIUM)
 
       read_seq    = acc_read_seq #(OUT_DEPTH)::type_id::create("read_seq");
-      read_seq.start(m_sequencer);
-      `uvm_info("MAIN_SEQ", {read_seq.get_type_name(), ": starts"}, UVM_MEDIUM)
+      `uvm_info("MAIN_SEQ", {read_seq.get_full_name(), ": starts"}, UVM_MEDIUM)
+      read_seq.start(m_sequencer, this);
+      `uvm_info("MAIN_SEQ", {read_seq.get_full_name(), ": completed"}, UVM_MEDIUM)
 		endtask
   endclass
 endpackage
