@@ -24,8 +24,13 @@ always @(posedge clk)
 	end
 
 // assign output_rdata = (!output_we) ? mem[output_addr] : 'd0;
-assign output_rdata = mem[output_raddr];
-assign output_valid = output_raddr < output_waddr;
+always @(posedge clk) begin
+  output_rdata  <= mem [output_raddr];
+  output_valid  <= output_raddr < output_waddr;
+end
+
+// assign output_rdata = mem[output_raddr];
+// assign output_valid = output_raddr < output_waddr;
 
 initial begin
   for (int i = 0; i < DEPTH; i++) begin
