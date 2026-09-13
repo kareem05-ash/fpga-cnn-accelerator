@@ -4,6 +4,7 @@ module output_mem # (
     parameter int ADDR_W = $clog2(DEPTH)
 )(
     input  logic clk,                                   // active-high system clock
+    input  logic rst_n,
     input  logic output_we,
     // input  logic output_re,                // is no longer needed 
     input  logic [ADDR_W-1 : 0]      output_waddr,
@@ -25,8 +26,13 @@ always @(posedge clk)
 
 // assign output_rdata = (!output_we) ? mem[output_addr] : 'd0;
 always @(posedge clk) begin
-  output_rdata  <= mem [output_raddr];
-  output_valid  <= output_raddr < output_waddr;
+  if (!rst_n) begin
+    output_rdata  <= '0;
+    output_valid  <= '0;
+  end begin
+    output_rdata  <= mem [output_raddr];
+    output_valid  <= output_raddr < output_waddr;
+  end
 end
 
 // assign output_rdata = mem[output_raddr];
