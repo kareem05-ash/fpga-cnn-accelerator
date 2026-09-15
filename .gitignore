@@ -6,3 +6,6 @@
 *output*.txt
 kernel.txt
 input.txt
+
+tb/integ/*.mti
+tb/integ/*.mpf
