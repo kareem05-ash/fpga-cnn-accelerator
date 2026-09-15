@@ -29,7 +29,7 @@ always @(posedge clk) begin
   if (!rst_n) begin
     output_rdata  <= '0;
     output_valid  <= '0;
-  end begin
+  end else begin
     output_rdata  <= mem [output_raddr];
     output_valid  <= output_raddr < output_waddr;
   end

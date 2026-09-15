@@ -151,8 +151,8 @@ module accelerator_top #(
     .N(N),
     .PROD_W(PROD_W)
   ) ReLU(
-    .clk(clk),
-    .rst_n(rst_n),
+    // .clk(clk),
+    // .rst_n(rst_n),
     .conv_result(conv_result),
     .conv_valid(conv_valid),
     .conv_last(conv_last),
