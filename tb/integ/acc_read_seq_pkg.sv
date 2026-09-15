@@ -7,6 +7,7 @@ package acc_read_seq_pkg;
   class acc_read_seq #(OUT_DEPTH) extends uvm_sequence #(acc_txn);
     `uvm_object_param_utils(acc_read_seq #(OUT_DEPTH))
 
+
     function new(string name="acc_read_seq");
       super.new(name);
     endfunction //new()
@@ -29,10 +30,9 @@ package acc_read_seq_pkg;
       //     })
       //   finish_item(txn);
       // end
-
       -> m_cfg.read_seq_start_e;
-
-      for (int idx=0; idx <= OUT_DEPTH; idx++) begin
+		
+      for (int idx=0; idx <= OUT_DEPTH+1; idx++) begin
         txn = acc_txn::type_id::create("output_txn");
 
         start_item(txn);

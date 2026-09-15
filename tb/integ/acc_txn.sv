@@ -84,6 +84,10 @@ package acc_txn_pkg;
       constraint kernel_c {
         kernel_wdata dist {[-128:-1] := 2, [0 : 127] := 8};
       }
+	  
+	  constraint PIXEL_IN {
+		pixel_in dist {[0:127] :/ 4, [128:255] :/ 1};
+	  }
 
 		`uvm_object_utils_begin (acc_txn)
 			// `uvm_field_int		(rst_n,    			UVM_DEFAULT)

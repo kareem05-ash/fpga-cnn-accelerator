@@ -151,14 +151,28 @@ module sliding_window #(
         .window_valid(window_valid)
     );
 
-    sw_window_extractor #(
-        .N        (N /* default 3 */),
-        .IMG_WIDTH(IMG_WIDTH /* default 32 */)
+    // sw_window_extractor #(
+        // .N        (N /* default 3 */),
+        // .IMG_WIDTH(IMG_WIDTH /* default 32 */)
+    // ) u_window_extractor (
+        // .clk(clk),
+        // .line_buf  (line_buf),
+        // .pixel_in  (pixel_in),
+        // .wr_addr   (wr_addr),
+        // .window    (window)
+    // );
+	
+	sw_window_extractor #(
+        .N        (N),
+        .IMG_WIDTH(IMG_WIDTH)
     ) u_window_extractor (
-        .clk(clk),
-        .line_buf  (line_buf),
-        .pixel_in  (pixel_in),
-        .wr_addr   (wr_addr),
-        .window    (window)
+        .clk        (clk),
+        .pixel_valid(pixel_valid), 
+        .line_buf   (line_buf),
+        .pixel_in   (pixel_in),
+        .col_idx    (col_idx),
+        .active_row (active_row),
+        .oldest_row (oldest_row),
+        .window     (window)
     );
 endmodule

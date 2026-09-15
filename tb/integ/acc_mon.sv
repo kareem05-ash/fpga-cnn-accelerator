@@ -54,9 +54,11 @@ package acc_mon_pkg;
             UVM_DEBUG)
           if (!m_cfg.acc_vif.output_valid)
             `uvm_warning(get_full_name(), "Output isn't valid")
+		else `uvm_info(get_full_name(), "Output is valid",UVM_DEBUG)
       end
-
+		`uvm_info(get_full_name(), "after repeat",UVM_DEBUG)
       $fclose(file_h);
+		`uvm_info(get_full_name(), "file closed",UVM_DEBUG)
     endtask
 
     virtual task run_phase(uvm_phase phase);
@@ -71,7 +73,8 @@ package acc_mon_pkg;
 
         begin
           @(m_cfg.read_seq_start_e);
-            @(negedge m_cfg.acc_vif.clk);
+           @(negedge m_cfg.acc_vif.clk);
+		   @(negedge m_cfg.acc_vif.clk); //---------try:>
               `uvm_info(get_full_name(), "Before getting into save_output()", UVM_DEBUG)
               save_output();
               `uvm_info(get_full_name(), "After  getting into save_output()", UVM_DEBUG)
