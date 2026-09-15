@@ -82,7 +82,7 @@ package acc_txn_pkg;
       }
 
       constraint kernel_c {
-        kernel_wdata dist {[-128:-1] := 2, [0 : 127] := 8};
+        kernel_wdata dist {[-128:-1] :/ 2, [0 : 127] :/ 8};
       }
 	  
 	  constraint PIXEL_IN {

@@ -42,21 +42,4 @@ interface acc_if #(
     logic [OUT_W-1 : 0]          output_rdata;
 
 	
-	modport DUT_side (
-		input clk,rst_n,start,pixel_valid,pixel_dropped, pixel_last,output_raddr,pixel_in,
-					kernel_we,kernel_waddr,kernel_wdata,
-		output  busy,done,output_valid,output_rdata
-	);
-	
-	modport TB_side (
-		output clk,rst_n,start,pixel_valid,pixel_dropped, pixel_last,output_raddr,pixel_in,
-					kernel_we,kernel_waddr,kernel_wdata,
-		input  busy,done,output_valid,output_rdata
-	);
-
-	modport ASSERT_side (
-		input  clk,rst_n,start,pixel_valid,pixel_dropped, pixel_last,output_raddr,pixel_in,
-					kernel_we,kernel_waddr,kernel_wdata,busy,done,output_valid,output_rdata
-	);
-	
 endinterface

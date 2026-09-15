@@ -44,7 +44,6 @@ package acc_stream_seq_pkg;
               pixel_dropped==0;
             })
               `uvm_fatal("STREAM_SEQ", "Randomization Failed")
-
           end
 
           `uvm_info("STREAM_SEQ", txn.sprint(), UVM_HIGH)
