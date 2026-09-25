@@ -9,3 +9,13 @@ input.txt
 
 tb/integ/*.mti
 tb/integ/*.mpf
+
+.Xil/
+*.mpf
+*.mpf_new
+*.jou
+*.log
+impl_out/
+xsim.dir/
+*.pb
+*.mti
