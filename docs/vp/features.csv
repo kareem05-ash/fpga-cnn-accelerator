@@ -1,0 +1,9 @@
+ID,ModuleID,Feature,Description,VerificationGoal
+F001,M001,Reset,Verify accelerator enters reset state,DUT shall set at '0 'busy' 'done' 'output_valid' 'output_rdata'
+F002,M001,Start Cmd,Verify fsm transition to PROCESSING,DUT shall set 'busy' at 1'b1 'done' at 1'b0
+F003,M001,Pixel Latency,Verify accelerator holds,DUT shall do nothing holding the current statue
+F004,M001,Pixel Dropp,Verify accelerator handles dropped pixels,DUT shall hold the last pixel_in
+F005,M001,RelU,Verify accelerator generates positive outputs only,DUT shall generates positive outputs with both positive & negative kernels
+F006,M001,Kernel Programability,Verify accelerator handles different kernel sizes,DUT shall holds for different kernel sizes
+F007,M001,Full-Parallel,Verify accelerator generate an output pixel each cycle,DUT shall generate one valid output each cycle after geting into pipeline-full
+F008,M001,MEM Read,Verify accelerator support output memory access,DUT shall give access to the source to fetch processed pixels

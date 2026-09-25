@@ -4,6 +4,8 @@ module output_formatter #(
         parameter int unsigned OUT_W = 16
 ) (
     // Inputs
+        input  logic                        clk,
+        input  logic                        rst_n,
         input  logic                        relu_valid,
         input  logic                        relu_last,
         input  logic signed [ACC_W-1 : 0]   relu_result,
@@ -14,11 +16,33 @@ module output_formatter #(
 );
     localparam logic signed [OUT_W-1 : 0] MAX_OUT = {1'b0, {OUT_W-1{1'b1}}};
     localparam logic signed [OUT_W-1 : 0] MIN_OUT = {1'b1, {OUT_W-1{1'b0}}};
-    assign pixel_last   = relu_valid && relu_last;
-    assign pixel_valid  = relu_valid;
-    /* Perform Saturation Only */
-    always_comb begin
-        pixel_out = '0;
+    // assign pixel_last   = relu_valid && relu_last;
+    // assign pixel_valid  = relu_valid;
+    // /* Perform Saturation Only */
+    // always_comb begin
+    //     pixel_out = '0;
+    //     if (relu_valid) begin
+    //         // upper saturation
+    //         if (relu_result > signed'({{ACC_W-OUT_W{MAX_OUT[OUT_W-1]}}, MAX_OUT})) begin
+    //             pixel_out = MAX_OUT;
+    //         // lower saturation
+    //         end else if (relu_result < signed'({{ACC_W-OUT_W{MIN_OUT[OUT_W-1]}}, MIN_OUT})) begin
+    //             pixel_out = MIN_OUT;
+    //         // no saturation
+    //         end else begin
+    //             pixel_out = relu_result;
+    //         end
+    //     end
+    // end
+
+    always_ff @(posedge clk) begin
+      if (!rst_n) begin
+        pixel_last    <= '0;
+        pixel_valid   <= '0;
+        pixel_out     <= '0;
+      end else begin
+        pixel_last    <= relu_valid && relu_last;
+        pixel_valid   <= relu_valid;
         if (relu_valid) begin
             // upper saturation
             if (relu_result > signed'({{ACC_W-OUT_W{MAX_OUT[OUT_W-1]}}, MAX_OUT})) begin
@@ -31,5 +55,6 @@ module output_formatter #(
                 pixel_out = relu_result;
             end
         end
+      end
     end
 endmodule

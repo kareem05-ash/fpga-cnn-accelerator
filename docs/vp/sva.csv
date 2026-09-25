@@ -1,0 +1,3 @@
+ID,Name,Property,Type
+SVA001,start_cmd,concurrent,@(posedge clk) disable iff(!rst_n) start |=> busy
+SVA002,end_of_frame,concurrent,@(posedge clk) disable iff(!rst_n) (pixel_last && pixel_valid) |=> done

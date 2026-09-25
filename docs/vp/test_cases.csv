@@ -1,0 +1,7 @@
+ID,Feature,Parameter
+TC001,F001,rst_n
+TC002,F002,start
+TC003,F003;F004;F007,InputImg
+TC004,F006,N
+TC005,F008,output_raddr
+TC006,F005,kernel

@@ -1,0 +1,4 @@
+NotStarted
+Pending
+Passed
+Failed

@@ -1,0 +1,7 @@
+ModuleID,Parameter,Value
+M001,rst_n,AssertReset;ReleaseReset
+M001,start,1'b0;1'b1
+M001,kernel,AllZeros;AllOnes;AllNegative;RANDOM
+M001,InputImg,Black;White;VirticalEdge;HorizontalEdge;CenteredImpulse;CenteredSquare;RANDOM
+M001,N,3;5;7
+M001,output_raddr,0;OUT_DEPTH-1
